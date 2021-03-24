@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Category {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
+  description String?
+  image       String?
+  pet         Pet[]
+}
+
+model User {
+  id        Int        @id @default(autoincrement())
+  username  String     @unique
+  email     String?    @unique
+  avatar    String?
+  createdAt DateTime   @default(now())
+  status    UserStatus @default(AVAILABLE)
+}
+
+model Pet {
+  id         Int        @id @default(autoincrement())
+  name       String     @unique
+  price      Float
+  costPrice  Float
+  photoUrls  PetPhoto[]
+  categoryId Int?
+  Category   Category?  @relation(fields: [categoryId], references: [id])
+}
+
+model PetPhoto {
+  id    Int    @id @default(autoincrement())
+  petId Int?
+  url   String
+  Pet   Pet?   @relation(fields: [petId], references: [id])
+}
+
+enum UserStatus {
+  AVAILABLE
+  PENDING
+  SOLD
+}

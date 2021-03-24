@@ -1,6 +1,7 @@
 import { Api } from "farrow-api";
 import { ApiService } from "farrow-api-server";
 import { Int, ObjectType, Type, String, List } from "farrow-schema";
+import { PrismaContext } from '../hooks'
 
 export class Category extends ObjectType {
   id = {
@@ -57,14 +58,12 @@ export const createCategory = Api(
     input: CreateCategoryInput,
     output: CreateCategoryOutput,
   },
-  (input) => {
-    // todo
-    return {
-      category: {
-        ...input,
-        id: 1,
-      },
-    };
+  async (input) => {
+    const prisma = PrismaContext.get();
+    const newCategory = await prisma.category.create({
+      data: input
+    });
+    return { category: newCategory };
   }
 );
 
@@ -89,16 +88,10 @@ export const deleteCategory = Api(
     input: DeleteCategoryInput,
     output: DeleteCategoryOutput,
   },
-  (input) => {
-    // todo
-    return {
-      category: {
-        name: "",
-        id: input.id,
-        description: "",
-        image: "",
-      },
-    };
+  async (input) => {
+    const prisma = PrismaContext.get();
+    const category = await prisma.category.delete({ where: { id: input.id } });
+    return { category }
   }
 );
 
@@ -125,11 +118,12 @@ export const getCategoryList = Api(
     input: GetCategoryListInput,
     output: GetCategoryListOutput,
   },
-  (input) => {
-    // todo
+  async (input) => {
+    const prisma = PrismaContext.get();
+    const list = await prisma.category.findMany();
     return {
-      list: [],
-      count: input.limit,
+      list,
+      count: list.length
     };
   }
 );

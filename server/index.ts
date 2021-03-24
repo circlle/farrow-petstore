@@ -3,9 +3,19 @@ import { Http } from 'farrow-http'
 import { vite } from 'farrow-vite'
 
 import { services } from './api'
+import { createContext } from 'farrow-pipeline'
+import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient();
 
 // create http server
-const http = Http()
+const http = Http({
+  contexts: ({req, requestInfo, basename}) => {
+    return {
+      prisma: createContext(prisma)
+    }
+  }
+})
 
 // attach service for api
 http.use(services)
