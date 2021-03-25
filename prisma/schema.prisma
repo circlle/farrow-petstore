@@ -19,13 +19,12 @@ model Category {
 }
 
 model User {
-  id        Int        @id @default(autoincrement())
-  username  String     @unique
-  password  String 
-  email     String?    @unique
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  password  String
+  email     String?  @unique
   avatar    String?
-  createdAt DateTime   @default(now())
-  status    UserStatus @default(AVAILABLE)
+  createdAt DateTime @default(now())
 }
 
 model Pet {
@@ -36,6 +35,7 @@ model Pet {
   photoUrls  PetPhoto[]
   categoryId Int?
   Category   Category?  @relation(fields: [categoryId], references: [id])
+  status     PetStatus  @default(AVAILABLE)
 }
 
 model PetPhoto {
@@ -45,7 +45,7 @@ model PetPhoto {
   Pet   Pet?   @relation(fields: [petId], references: [id])
 }
 
-enum UserStatus {
+enum PetStatus {
   AVAILABLE
   PENDING
   SOLD

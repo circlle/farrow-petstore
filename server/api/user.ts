@@ -1,6 +1,5 @@
 import { Int, ObjectType, Type, Nullable, Union, Literal } from "farrow-schema";
 import { ValidatorType, createSchemaValidator } from "farrow-schema/validator";
-import { UserStatus } from "@prisma/client";
 import { Api } from "farrow-api";
 import { prisma } from "../prisma";
 import { verifyPassword, hashPassword } from "../security/passwordMask";
@@ -41,15 +40,7 @@ export class User extends ObjectType {
   createdAt = {
     [Type]: String,
   };
-  status = {
-    [Type]: Nullable(
-      Union(
-        Literal(UserStatus.AVAILABLE),
-        Literal(UserStatus.PENDING),
-        Literal(UserStatus.SOLD)
-      )
-    ),
-  };
+
 }
 
 export class MaskUser extends ObjectType {
@@ -68,15 +59,6 @@ export class MaskUser extends ObjectType {
   createdAt = {
     [Type]: String,
   };
-  status = {
-    [Type]: Nullable(
-      Union(
-        Literal(UserStatus.AVAILABLE),
-        Literal(UserStatus.PENDING),
-        Literal(UserStatus.SOLD)
-      )
-    ),
-  };
 }
 
 // ! create user
@@ -92,15 +74,6 @@ export class CreateUserInput extends ObjectType {
   };
   avatar = {
     [Type]: Nullable(String),
-  };
-  status = {
-    [Type]: Nullable(
-      Union(
-        Literal(UserStatus.AVAILABLE),
-        Literal(UserStatus.PENDING),
-        Literal(UserStatus.SOLD)
-      )
-    ),
   };
 }
 
@@ -180,6 +153,7 @@ export const login = Api(
     input: LoginInput,
     output: LoginOutput,
   },
+  // todo fix
   async (input) => {
     // UserNotFound
     const maybeUser = await prisma.user.findUnique({
