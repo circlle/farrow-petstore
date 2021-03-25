@@ -130,20 +130,20 @@ export const createUser = Api(
     if (either.isRight(maybePassword))
       return { data: { message: maybePassword.right } };
 
-      const hashedPassword = maybePassword.left;
+    const hashedPassword = maybePassword.left;
 
-      const { password, ...maskUser } = await prisma.user.create({
-        data: {
-          ...input,
-          password: hashedPassword,
-          createdAt: new Date(),
-        },
-      });
-      return {
-        data: {
-          user: { ...maskUser, createdAt: maskUser.createdAt.toDateString() },
-        },
-      }; 
+    const { password, ...maskUser } = await prisma.user.create({
+      data: {
+        ...input,
+        password: hashedPassword,
+        createdAt: new Date(),
+      },
+    });
+    return {
+      data: {
+        user: { ...maskUser, createdAt: maskUser.createdAt.toDateString() },
+      },
+    };
   }
 );
 
@@ -158,19 +158,20 @@ export class LoginInput extends ObjectType {
 }
 
 export class LoginSuccess extends ObjectType {
+  __typename = Literal("LOGIN_SUCCESS");
   token = String;
 }
 export class UserNotFound extends ObjectType {
+  __typename = Literal("USER_NOT_FOUND");
   message = String;
   username = String;
 }
 export class PasswordError extends ObjectType {
+  __typename = Literal("PASSWORD_ERROR");
   message = String;
 }
 export class LoginOutput extends ObjectType {
-  data = {
-    [Type]: Union(LoginSuccess, UserNotFound, PasswordError),
-  };
+  data = Union(LoginSuccess, UserNotFound, PasswordError);
 }
 
 export const login = Api(
@@ -185,7 +186,13 @@ export const login = Api(
       where: { username: input.username },
     });
     if (!maybeUser)
-      return { data: { message: "user not found", username: input.username } };
+      return {
+        data: {
+          __typename: "USER_NOT_FOUND",
+          message: "user not found",
+          username: input.username,
+        },
+      };
 
     // PasswordError
     const maybeValidPasword = await verifyPassword(
@@ -193,18 +200,22 @@ export const login = Api(
       input.password
     );
     if (either.isRight(maybeValidPasword))
-      return { data: { message: maybeValidPasword.right } };
+      return {
+        data: {
+          __typename: "PASSWORD_ERROR",
+          message: maybeValidPasword.right,
+        },
+      };
 
     // LoginSuccess
     const token = jwtSign(maybeUser);
-    return { data: { token } };
+    return { data: { __typename: "LOGIN_SUCCESS", token } };
   }
 );
-
 
 export const service = ApiService({
   entries: {
     login,
-    createUser
-  }
-})
+    createUser,
+  },
+});

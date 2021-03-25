@@ -1,59 +1,29 @@
-import React, { useState, useEffect } from 'react'
-import logo from './logo.svg'
-import './App.css'
-import { api as GreetApi } from './api/greet'
+import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import BottomBar from "./components/shared/BottomBar";
+import Login from "./components/Login";
+import Home from "./components/Home";
+import My from "./components/My";
 
 function App() {
-  let [greet, setGreet] = useState('')
-
-  useEffect(() => {
-    let task = async () => {
-      let result = await GreetApi.greet({
-        name: `Farrow + React + Vite`,
-      })
-      setGreet(result.greet)
-    }
-    task().catch((error) => {
-      console.log('error', error)
-    })
-  }, [])
-
-  if (!greet) return null
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>{greet}</p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://github.com/Lucifier129/farrow"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn Farrow
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn Vite
-          </a>
-        </p>
-      </header>
-    </div>
-  )
+    <Router>
+      <Switch>
+        <Route path={"/category"}>Category</Route>
+        <Route path={"/shopping"}>Shopping Cart</Route>
+        <Route path={"/my"}>
+          <My />
+        </Route>
+        <Route path={"/login"}>
+          <Login />
+        </Route>
+        <Route path={"/"}>
+          <Home />
+        </Route>
+      </Switch>
+      <BottomBar />
+    </Router>
+  );
 }
 
-export default App
+export default App;

@@ -14,7 +14,12 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react"
+    "jsx": "react",
+    "baseUrl": ".",
+    "paths": {
+      "@server-api/*": ["./src/api/*"],
+      "@client-constant": ["./src/constant"]
+    }
   },
   "include": ["./src"]
 }
