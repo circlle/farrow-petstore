@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@prisma/client": "2.19.0",
+    "argon2": "^0.27.1",
     "farrow": "^1.8.1",
     "farrow-api": "^1.8.1",
     "farrow-api-client": "^1.8.1",
@@ -16,6 +17,9 @@
     "farrow-http": "^1.8.1",
     "farrow-pipeline": "^1.8.0",
     "farrow-schema": "^1.8.0",
+    "fp-ts": "^2.9.5",
+    "jsonwebtoken": "^8.5.1",
+    "prisma": "^2.19.0",
     "react": "^17.0.0",
     "react-dom": "^17.0.0"
   },
