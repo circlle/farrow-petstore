@@ -25,6 +25,7 @@ model User {
   email     String?  @unique
   avatar    String?
   createdAt DateTime @default(now())
+  Order     Order[]
 }
 
 model Pet {
@@ -37,6 +38,7 @@ model Pet {
   categoryId  Int?
   category    Category?  @relation(fields: [categoryId], references: [id])
   status      PetStatus  @default(AVAILABLE)
+  Order       Order[]
 }
 
 model PetPhoto {
@@ -44,6 +46,16 @@ model PetPhoto {
   petId Int?
   url   String
   Pet   Pet?   @relation(fields: [petId], references: [id])
+}
+
+model Order {
+  id       Int      @id @default(autoincrement())
+  petId    Int
+  pet      Pet      @relation(fields: [petId], references: [id])
+  userId   Int
+  user     User     @relation(fields: [userId], references: [id])
+  shipDate DateTime @default(now())
+  complete Boolean
 }
 
 enum PetStatus {
