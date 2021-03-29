@@ -40,7 +40,6 @@ export class User extends ObjectType {
   createdAt = {
     [Type]: String,
   };
-
 }
 
 export class MaskUser extends ObjectType {
@@ -162,7 +161,7 @@ export const login = Api(
     if (!maybeUser)
       return {
         data: {
-          __typename: "USER_NOT_FOUND",
+          __typename: "USER_NOT_FOUND" as const,
           message: "user not found",
           username: input.username,
         },
@@ -176,14 +175,14 @@ export const login = Api(
     if (either.isRight(maybeValidPasword))
       return {
         data: {
-          __typename: "PASSWORD_ERROR",
+          __typename: "PASSWORD_ERROR" as const,
           message: maybeValidPasword.right,
         },
       };
 
     // LoginSuccess
     const token = jwtSign(maybeUser);
-    return { data: { __typename: "LOGIN_SUCCESS", token } };
+    return { data: { __typename: "LOGIN_SUCCESS" as const, token } };
   }
 );
 

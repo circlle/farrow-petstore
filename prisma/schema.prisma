@@ -34,7 +34,7 @@ model Pet {
   costPrice  Float
   photoUrls  PetPhoto[]
   categoryId Int?
-  Category   Category?  @relation(fields: [categoryId], references: [id])
+  category   Category?  @relation(fields: [categoryId], references: [id])
   status     PetStatus  @default(AVAILABLE)
 }
 

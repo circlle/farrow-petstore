@@ -1,4 +1,3 @@
-// import { Pet } from "@prisma/client"
 import { Api } from "farrow-api";
 import { ApiService } from "farrow-api-server";
 import {
@@ -13,26 +12,26 @@ import {
   List,
 } from "farrow-schema";
 import { prisma } from "../prisma";
-import { PetStatus } from '@prisma/client'
+import {
+  PetStatus as PrismaPetStatus,
+  Pet as PrismaPet,
+  Category as PrismaCategory,
+} from "@prisma/client";
 import { Category } from "./category";
 
-// export type Pet = {
-//   id: number
-//   name: string
-//   price: number
-//   costPrice: number
-//   categoryId: number | null
-// }
-
-// /**
-//  * Model PetPhoto
-//  */
-
-// export type PetPhoto = {
-//   id: number
-//   petId: number | null
-//   url: string
-// }
+/**
+ * Model PetPhoto
+ */
+export type PetPhoto = {
+  id: number;
+  petId: number | null;
+  url: string;
+};
+export const PetStatus = Union(
+  Literal(PrismaPetStatus.AVAILABLE),
+  Literal(PrismaPetStatus.PENDING),
+  Literal(PrismaPetStatus.SOLD)
+);
 export class Pet extends ObjectType {
   id = Int;
   name = String;
@@ -40,13 +39,7 @@ export class Pet extends ObjectType {
   costPrice = Float;
   categoryId = Nullable(Int);
   status = {
-    [Type]: Nullable(
-      Union(
-        Literal(PetStatus.AVAILABLE),
-        Literal(PetStatus.PENDING),
-        Literal(PetStatus.SOLD)
-      )
-    ),
+    [Type]: Nullable(PetStatus),
   };
 }
 
@@ -57,16 +50,10 @@ export class MaskPet extends ObjectType {
   categoryId = Nullable(Int);
   category = Nullable(Category);
   status = {
-    [Type]: Nullable(
-      Union(
-        Literal(PetStatus.AVAILABLE),
-        Literal(PetStatus.PENDING),
-        Literal(PetStatus.SOLD)
-      )
-    ),
+    [Type]: Nullable(PetStatus),
   };
 }
-export const MaskPetList = List(MaskPet)
+export const MaskPetList = List(MaskPet);
 
 // ! create pet
 export class CreatePetInput extends ObjectType {
@@ -84,9 +71,7 @@ export class CreatePetSuccess extends ObjectType {
   type = Literal("CREATE_PET_SUCCESS");
   pet = MaskPet;
 }
-export class CreatePetOutput extends ObjectType {
-  data = Union(PetExist, CreatePetSuccess);
-}
+export const CreatePetOutput = Union(PetExist, CreatePetSuccess);
 
 export const createPet = Api(
   {
@@ -99,23 +84,86 @@ export const createPet = Api(
       where: { name: input.name },
     });
     if (maybeExistPet)
-      return {
-        data: { type: "PET_EXIST", message: `pet ${input.name} exist` },
-      };
+      return { type: "PET_EXIST" as const, message: `pet ${input.name} exist` };
 
-    const result = await prisma.pet.create({ data: input });
-    return { data: { type: "CREATE_PET_SUCCESS", pet: result } };
+    const pet = await prisma.pet.create({ data: input });
+
+    const newCreatePet = await prisma.pet.findFirst({
+      where: { id: pet.id },
+      include: {
+        category: true,
+      },
+    });
+
+    return {
+      type: "CREATE_PET_SUCCESS" as const,
+      pet: petToMaskPet(newCreatePet),
+    };
   }
 );
 
 // ! findPets
-export class GetPetListInput extends ObjectType {
-  limit = Nullable(Int)
-  categoryId = Nullable(Int)
+export class Pagination extends ObjectType {
+  total = Int;
+  count = Int;
+  pageSize = Int;
+  pageIndex = Int;
 }
+export class GetPetListInput extends ObjectType {
+  pageIndex = Nullable(Int);
+  pageSize = Nullable(Int);
+  categoryId = Nullable(Int);
+  status = Nullable(PetStatus);
+}
+export class GetPetListOutput extends ObjectType {
+  list = MaskPetList;
+  pagination = Pagination;
+}
+export const getPetList = Api(
+  {
+    description: "get pet list by filter",
+    input: GetPetListInput,
+    output: GetPetListOutput,
+  },
+  async (input) => {
+    const pageIndex = input.pageIndex ?? 0;
+    const pageSize = input.pageSize ?? 20;
+    const pets = await prisma.pet.findMany({
+      skip: pageIndex * pageSize,
+      take: pageSize,
+      where: { categoryId: input.categoryId },
+      include: { category: true },
+    });
+    const total = await prisma.pet.count({
+      where: { categoryId: input.categoryId, status: input.status },
+    });
+    return {
+      list: pets.map(petToMaskPet),
+      pagination: { total, count: pets.length, pageSize, pageIndex },
+    };
+  }
+);
 
 export const service = ApiService({
   entries: {
-    createPet
-  }
-})
+    createPet,
+    getPetList,
+  },
+});
+
+// ! util
+export type PrismaPetWithCategory = PrismaPet & { category: PrismaCategory };
+export type PrismaMaskPet = Pick<
+  PrismaPetWithCategory,
+  "id" | "categoryId" | "price" | "name" | "status" | "category"
+>;
+function petToMaskPet(pet: PrismaPetWithCategory): PrismaMaskPet {
+  return {
+    id: pet.id,
+    categoryId: pet.categoryId,
+    category: pet.category,
+    status: pet.status,
+    price: pet.price,
+    name: pet.name,
+  };
+}

@@ -53,7 +53,6 @@ export type CreateUserInput = {
   email: string | null | undefined
   password: string
   avatar: string | null | undefined
-  status: 'AVAILABLE' | 'PENDING' | 'SOLD' | null | undefined
 }
 
 /**
@@ -86,7 +85,6 @@ export type MaskUser = {
   email: string | null | undefined
   avatar: string | null | undefined
   createdAt: string
-  status: 'AVAILABLE' | 'PENDING' | 'SOLD' | null | undefined
 }
 
 export const url = 'http://localhost:3003/api/user'
