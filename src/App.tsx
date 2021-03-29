@@ -5,11 +5,15 @@ import Login from "./components/Login";
 import Home from "./components/Home";
 import My from "./components/My";
 import CategoryDetail from "./components/CategoryDetail"
+import PetDetail from "./components/PetDetail";
 
 function App() {
   return (
     <Router>
       <Switch>
+        <Route path={"/pet/:petId"}>
+          <PetDetail />
+        </Route>
         <Route path={"/category/:categoryId"}>
           <CategoryDetail />
         </Route>

@@ -105,6 +105,45 @@ export const createPet = Api(
   }
 );
 
+// find pet by id
+export class GetPetByIdInput extends ObjectType {
+  id = Int;
+}
+export class PetNotFound extends ObjectType {
+  type = Literal("PET_NOT_FOUND");
+  message = String;
+  petId = Int;
+}
+export class GetPetByIdSuccess extends ObjectType {
+  type = Literal("GET_PET_BY_ID_SUCCESS");
+  pet = MaskPet;
+}
+export const GetPetByIdOutput = Union(PetNotFound, GetPetByIdSuccess);
+export const getPetById = Api(
+  {
+    description: "get pet by id",
+    input: GetPetByIdInput,
+    output: GetPetByIdOutput,
+  },
+  async (input) => {
+    const maybePet = await prisma.pet.findUnique({
+      where: { id: input.id },
+      include: { category: true, photos: true },
+    });
+    if (!maybePet)
+      return {
+        type: "PET_NOT_FOUND" as const,
+        message: "pet not found",
+        petId: input.id,
+      };
+
+    return {
+      type: "GET_PET_BY_ID_SUCCESS" as const,
+      pet: petToMaskPet(maybePet),
+    };
+  }
+);
+
 // ! findPets
 export class Pagination extends ObjectType {
   total = Int;
@@ -158,6 +197,7 @@ export const service = ApiService({
   entries: {
     createPet,
     getPetList,
+    getPetById
   },
 });
 

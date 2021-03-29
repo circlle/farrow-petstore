@@ -104,6 +104,30 @@ export type Pagination = {
   pageIndex: number
 }
 
+/**
+ * {@label GetPetByIdInput}
+ */
+export type GetPetByIdInput = {
+  id: number
+}
+
+/**
+ * {@label PetNotFound}
+ */
+export type PetNotFound = {
+  type: 'PET_NOT_FOUND'
+  message: string
+  petId: number
+}
+
+/**
+ * {@label GetPetByIdSuccess}
+ */
+export type GetPetByIdSuccess = {
+  type: 'GET_PET_BY_ID_SUCCESS'
+  pet: MaskPet
+}
+
 export const url = 'http://localhost:3003/api/pet'
 
 export const apiPipeline = createApiPipelineWithUrl(url)
@@ -119,4 +143,9 @@ export const api = {
    */
   getPetList: (input: GetPetListInput) =>
     apiPipeline.invoke({ path: ['getPetList'], input }) as Promise<GetPetListOutput>,
+  /**
+   * @remarks get pet by id
+   */
+  getPetById: (input: GetPetByIdInput) =>
+    apiPipeline.invoke({ path: ['getPetById'], input }) as Promise<PetNotFound | GetPetByIdSuccess>,
 }

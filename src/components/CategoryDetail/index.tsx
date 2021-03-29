@@ -4,6 +4,7 @@ import {
   IconButton,
   makeStyles,
   Toolbar,
+  Typography,
 } from "@material-ui/core";
 import { ArrowBack } from "@material-ui/icons";
 import { Category, api as CategoryApi } from "@server-api/category";
@@ -12,6 +13,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";
 import CategoryCard from "../shared/CategoryCard";
 import CategoryDetailHeader from "./CategoryDetailHeader";
+import TopBar from "../shared/TopBar";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -69,18 +71,7 @@ function CategoryDetail() {
   if (!category) return null;
   return (
     <div className={classes.root}>
-      <AppBar position="static" color="transparent" elevation={0}>
-        <Toolbar>
-          <IconButton
-            edge="start"
-            onClick={() => {
-              history.goBack();
-            }}
-          >
-            <ArrowBack />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
+      <TopBar title="category" />
       <div className={classes.header}>
         <CategoryDetailHeader category={category} />
       </div>
