@@ -1,19 +1,11 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { createStyles, makeStyles } from "@material-ui/core";
+import { MaskPet, api as PetApi } from "@server-api/pet";
 import useGallery from "../../hooks/useGallery";
 
-type GalleryItemType = {
-  id: number;
-  data: string;
-  background: string;
-};
-const rawGalleryList: GalleryItemType[] = [
-  { id: 1, data: "hello1", background: "#3580ff" },
-  { id: 2, data: "hello2", background: "#ff6243" },
-  { id: 3, data: "hello3", background: "#f9f9f9" },
-  { id: 4, data: "hello4", background: "red" },
-];
-const fixGalleryList = (list: GalleryItemType[]): GalleryItemType[] => {
+const fixGalleryList = (list: MaskPet[]): MaskPet[] => {
+  if (list.length === 0) return [];
+  if (list.length === 1) return list;
   return [
     { ...list[list.length - 1], id: -1 },
     ...list,
@@ -30,7 +22,6 @@ const useStyles = makeStyles((theme) =>
     galleryWrapper: {
       height: "100%",
       backgroundColor: "transparent",
-      opacity: "0.6",
       display: "flex",
       borderRadius: theme.shape.borderRadius,
       boxShadow: theme.shadows[2],
@@ -45,7 +36,23 @@ const useStyles = makeStyles((theme) =>
 );
 function Carousel() {
   const classes = useStyles();
-  const galleryList = fixGalleryList(rawGalleryList);
+  const [pets, setPets] = useState<MaskPet[]>([]);
+  useEffect(() => {
+    PetApi.getPetList({
+      pageIndex: 0,
+      pageSize: 5,
+      categoryId: null,
+      status: null,
+    })
+      .then((data) => {
+        setPets(data.list);
+      })
+      .catch((err) => {
+        console.log("fetch carousel pet fail");
+      });
+  }, []);
+
+  const galleryList = fixGalleryList(pets);
 
   const { currentIndex, setIndex } = useGallery({
     start: 1,
@@ -102,18 +109,30 @@ function Carousel() {
   );
 }
 
-const GalleryItem = ({ item: gallery }: { item: GalleryItemType }) => {
+const GalleryItem = ({ item: gallery }: { item: MaskPet }) => {
+  const imageUrl = gallery.photos[0]?.url;
   return (
     <div
       className="gallery"
       style={{
         height: "100%",
         width: "100%",
-        backgroundColor: gallery.background,
       }}
       key={gallery.id}
     >
-      <span>{gallery.data}</span>
+      {imageUrl ? (
+        <img
+          style={{
+            height: "100%",
+            width: "100%",
+          }}
+          src={imageUrl}
+        />
+      ) : (
+        <div>
+          <span>{gallery.name}</span>
+        </div>
+      )}
     </div>
   );
 };

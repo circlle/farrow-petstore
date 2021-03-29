@@ -40,6 +40,7 @@ export type MaskPet = {
   price: number
   categoryId: number | null | undefined
   category: Category | null | undefined
+  photos: PetPhoto[]
   status: 'AVAILABLE' | 'PENDING' | 'SOLD' | null | undefined
 }
 
@@ -63,6 +64,15 @@ export type Category = {
    * @remarks category photo
    */
   image: string
+}
+
+/**
+ * {@label PetPhoto}
+ */
+export type PetPhoto = {
+  id: number
+  petId: number
+  url: string
 }
 
 /**

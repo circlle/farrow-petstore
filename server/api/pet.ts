@@ -16,17 +16,15 @@ import {
   PetStatus as PrismaPetStatus,
   Pet as PrismaPet,
   Category as PrismaCategory,
+  PetPhoto as PrismaPetPhoto,
 } from "@prisma/client";
 import { Category } from "./category";
 
-/**
- * Model PetPhoto
- */
-export type PetPhoto = {
-  id: number;
-  petId: number | null;
-  url: string;
-};
+export class PetPhoto extends ObjectType {
+  id = Int;
+  petId = Int;
+  url = String;
+}
 export const PetStatus = Union(
   Literal(PrismaPetStatus.AVAILABLE),
   Literal(PrismaPetStatus.PENDING),
@@ -38,6 +36,7 @@ export class Pet extends ObjectType {
   price = Float;
   costPrice = Float;
   categoryId = Nullable(Int);
+  photos = List(PetPhoto);
   status = {
     [Type]: Nullable(PetStatus),
   };
@@ -49,6 +48,7 @@ export class MaskPet extends ObjectType {
   price = Float;
   categoryId = Nullable(Int);
   category = Nullable(Category);
+  photos = List(PetPhoto);
   status = {
     [Type]: Nullable(PetStatus),
   };
@@ -92,6 +92,7 @@ export const createPet = Api(
       where: { id: pet.id },
       include: {
         category: true,
+        photos: true,
       },
     });
 
@@ -128,14 +129,21 @@ export const getPetList = Api(
   async (input) => {
     const pageIndex = input.pageIndex ?? 0;
     const pageSize = input.pageSize ?? 20;
+    const whereFilter: { categoryId?: number; status?: PrismaPetStatus } = {};
+    if (typeof input.categoryId === "number") {
+      whereFilter.categoryId = input.categoryId;
+    }
+    if (typeof input.status === "string") {
+      whereFilter.status = input.status;
+    }
     const pets = await prisma.pet.findMany({
       skip: pageIndex * pageSize,
       take: pageSize,
-      where: { categoryId: input.categoryId },
-      include: { category: true },
+      where: whereFilter,
+      include: { category: true, photos: true },
     });
     const total = await prisma.pet.count({
-      where: { categoryId: input.categoryId, status: input.status },
+      where: whereFilter,
     });
     return {
       list: pets.map(petToMaskPet),
@@ -152,10 +160,12 @@ export const service = ApiService({
 });
 
 // ! util
-export type PrismaPetWithCategory = PrismaPet & { category: PrismaCategory };
+export type PrismaPetWithCategory = PrismaPet & { category: PrismaCategory } & {
+  photos: PrismaPetPhoto[];
+};
 export type PrismaMaskPet = Pick<
   PrismaPetWithCategory,
-  "id" | "categoryId" | "price" | "name" | "status" | "category"
+  "id" | "categoryId" | "price" | "name" | "status" | "category" | "photos"
 >;
 function petToMaskPet(pet: PrismaPetWithCategory): PrismaMaskPet {
   return {
@@ -165,5 +175,6 @@ function petToMaskPet(pet: PrismaPetWithCategory): PrismaMaskPet {
     status: pet.status,
     price: pet.price,
     name: pet.name,
+    photos: pet.photos,
   };
 }

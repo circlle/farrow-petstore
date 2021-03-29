@@ -32,7 +32,7 @@ model Pet {
   name       String     @unique
   price      Float
   costPrice  Float
-  photoUrls  PetPhoto[]
+  photos     PetPhoto[]
   categoryId Int?
   category   Category?  @relation(fields: [categoryId], references: [id])
   status     PetStatus  @default(AVAILABLE)
