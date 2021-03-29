@@ -35,6 +35,7 @@ export class Pet extends ObjectType {
   name = String;
   price = Float;
   costPrice = Float;
+  description = String;
   categoryId = Nullable(Int);
   photos = List(PetPhoto);
   status = {
@@ -46,6 +47,7 @@ export class MaskPet extends ObjectType {
   id = Int;
   name = String;
   price = Float;
+  description = String;
   categoryId = Nullable(Int);
   category = Nullable(Category);
   photos = List(PetPhoto);
@@ -165,7 +167,14 @@ export type PrismaPetWithCategory = PrismaPet & { category: PrismaCategory } & {
 };
 export type PrismaMaskPet = Pick<
   PrismaPetWithCategory,
-  "id" | "categoryId" | "price" | "name" | "status" | "category" | "photos"
+  | "id"
+  | "categoryId"
+  | "price"
+  | "name"
+  | "status"
+  | "category"
+  | "photos"
+  | "description"
 >;
 function petToMaskPet(pet: PrismaPetWithCategory): PrismaMaskPet {
   return {
@@ -176,5 +185,6 @@ function petToMaskPet(pet: PrismaPetWithCategory): PrismaMaskPet {
     price: pet.price,
     name: pet.name,
     photos: pet.photos,
+    description: pet.description,
   };
 }

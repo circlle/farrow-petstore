@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import { deepOrange, deepPurple } from "@material-ui/core/colors";
+import { Category } from "@server-api/category";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -38,7 +39,10 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-function CategoryHeader() {
+export type CategoryHeaderProps = {
+  category: Category;
+};
+function CategoryHeader(props: CategoryHeaderProps) {
   const classes = useStyles();
   return (
     <Paper>
@@ -47,10 +51,10 @@ function CategoryHeader() {
           className={`${classes.avatar} ${classes.orange} ${classes.small}`}
           variant={"circular"}
         >
-          C
+          {(props.category.name || "").slice(0, 1)}
         </Avatar>
         <Typography className={classes.title} variant="h6" noWrap>
-          cats
+          {props.category.name}
         </Typography>
         <Link>See All</Link>
       </Toolbar>

@@ -38,6 +38,7 @@ export type MaskPet = {
   id: number
   name: string
   price: number
+  description: string
   categoryId: number | null | undefined
   category: Category | null | undefined
   photos: PetPhoto[]

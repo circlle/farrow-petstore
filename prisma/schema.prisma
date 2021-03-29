@@ -28,14 +28,15 @@ model User {
 }
 
 model Pet {
-  id         Int        @id @default(autoincrement())
-  name       String     @unique
-  price      Float
-  costPrice  Float
-  photos     PetPhoto[]
-  categoryId Int?
-  category   Category?  @relation(fields: [categoryId], references: [id])
-  status     PetStatus  @default(AVAILABLE)
+  id          Int        @id @default(autoincrement())
+  name        String     @unique
+  price       Float
+  costPrice   Float
+  description String
+  photos      PetPhoto[]
+  categoryId  Int?
+  category    Category?  @relation(fields: [categoryId], references: [id])
+  status      PetStatus  @default(AVAILABLE)
 }
 
 model PetPhoto {

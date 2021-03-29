@@ -7,6 +7,7 @@ import {
   makeStyles,
   Typography,
 } from "@material-ui/core";
+import { MaskPet } from "@server-api/pet";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -26,18 +27,21 @@ const useStyles = makeStyles((theme) =>
 );
 
 export type CategoryCardProps = {
-  image: string;
+  pet: MaskPet;
 };
 function CategoryCard(props: CategoryCardProps) {
   const classes = useStyles();
+  const { pet } = props;
+  // todo select a default pet image
+  const imageUrl = pet.photos[0]?.url || "default";
   return (
     <Card className={classes.root}>
       <CardMedia className={classes.media} title={"hello"}>
-        <img src={props.image} alt={"product"} className={classes.image} />
+        <img src={imageUrl} alt={"product"} className={classes.image} />
       </CardMedia>
       <CardContent className={classes.cardContent}>
-        <Typography variant={"h6"}>Name</Typography>
-        <Typography variant={"body2"}>I am description</Typography>
+        <Typography variant={"h6"}>{pet.name}</Typography>
+        <Typography variant={"body2"}>{pet.description}</Typography>
       </CardContent>
     </Card>
   );

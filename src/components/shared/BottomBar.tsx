@@ -42,7 +42,7 @@ function BottomBar() {
   if (!inTabs) return null;
 
   return (
-    <AppBar position={"fixed"} color={"primary"} className={classes.appBar}>
+    <AppBar position={"sticky"} color={"primary"} className={classes.appBar}>
       <Paper square className={classes.root}>
         <Tabs
           value={indicator}
