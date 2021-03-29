@@ -1,4 +1,12 @@
-import { Int, ObjectType, Type, Nullable, Union, Literal } from "farrow-schema";
+import {
+  Int,
+  ObjectType,
+  Type,
+  Nullable,
+  Union,
+  Literal,
+  Literals,
+} from "farrow-schema";
 import { ValidatorType, createSchemaValidator } from "farrow-schema/validator";
 import { Api } from "farrow-api";
 import { prisma } from "../prisma";
@@ -186,9 +194,46 @@ export const login = Api(
   }
 );
 
+// ! get user by id
+export class GetUserByIdInput extends ObjectType {
+  id = Int;
+}
+
+export class GetUserByIdSuccess extends ObjectType {
+  type = Literal("GET_USER_BY_ID_SUCCESS");
+  user = MaskUser;
+}
+export class GetUserByIdNotFound extends ObjectType {
+  type = Literal("GET_USER_BY_ID_NOT_FOUND");
+  message = String;
+}
+export const GetUserByIdOutput = Union(GetUserByIdSuccess, GetUserByIdNotFound);
+
+export const getUserById = Api(
+  {
+    description: "get user by id",
+    input: GetUserByIdInput,
+    output: GetUserByIdOutput,
+  },
+  async (input) => {
+    const maybeUser = await prisma.user.findUnique({ where: { id: input.id } });
+    if (!maybeUser)
+      return {
+        type: "GET_USER_BY_ID_NOT_FOUND" as const,
+        message: "user not found",
+      };
+    const { password, ...maskUser } = maybeUser;
+    return {
+      type: "GET_USER_BY_ID_SUCCESS" as const,
+      user: { ...maskUser, createdAt: maskUser.createdAt.toDateString() },
+    };
+  }
+);
+
 export const service = ApiService({
   entries: {
     login,
     createUser,
+    getUserById,
   },
 });

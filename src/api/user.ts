@@ -87,6 +87,29 @@ export type MaskUser = {
   createdAt: string
 }
 
+/**
+ * {@label GetUserByIdInput}
+ */
+export type GetUserByIdInput = {
+  id: number
+}
+
+/**
+ * {@label GetUserByIdSuccess}
+ */
+export type GetUserByIdSuccess = {
+  type: 'GET_USER_BY_ID_SUCCESS'
+  user: MaskUser
+}
+
+/**
+ * {@label GetUserByIdNotFound}
+ */
+export type GetUserByIdNotFound = {
+  type: 'GET_USER_BY_ID_NOT_FOUND'
+  message: string
+}
+
 export const url = 'http://localhost:3003/api/user'
 
 export const apiPipeline = createApiPipelineWithUrl(url)
@@ -101,4 +124,9 @@ export const api = {
    */
   createUser: (input: CreateUserInput) =>
     apiPipeline.invoke({ path: ['createUser'], input }) as Promise<CreateUserOutput>,
+  /**
+   * @remarks get user by id
+   */
+  getUserById: (input: GetUserByIdInput) =>
+    apiPipeline.invoke({ path: ['getUserById'], input }) as Promise<GetUserByIdSuccess | GetUserByIdNotFound>,
 }

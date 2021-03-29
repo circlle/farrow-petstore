@@ -2,6 +2,7 @@ import { sign as jwtSign, verify as jwtVerify } from 'jsonwebtoken'
 import { JWT_KEY } from '../config'
 import { option } from 'fp-ts'
 import { User } from '@prisma/client'
+import { Option } from 'fp-ts/lib/Option'
 
 export type JWTInfo = Pick<User, "id" | "username" | "email"> & { exp: number }
 
@@ -24,7 +25,7 @@ export const verify = async (token: string) => {
     const decoded = await jwtVerify(token, JWT_KEY) as JWTInfo
     return option.some(decoded)
   } catch (error) {
-    return option.zero()
+    return option.none
   }
 }
 
