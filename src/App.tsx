@@ -21,6 +21,8 @@ function App() {
           <Home />
         </Route>
       </Switch>
+      {/* solve fixed bottom bar naively */}
+      <div style={{ height: 64 }}></div>
       <BottomBar />
     </Router>
   );
