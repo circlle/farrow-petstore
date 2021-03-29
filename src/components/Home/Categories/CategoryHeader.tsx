@@ -10,6 +10,7 @@ import {
 import React from "react";
 import { deepOrange, deepPurple } from "@material-ui/core/colors";
 import { Category } from "@server-api/category";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -44,6 +45,10 @@ export type CategoryHeaderProps = {
 };
 function CategoryHeader(props: CategoryHeaderProps) {
   const classes = useStyles();
+  const history = useHistory();
+  const onLinkClick = () => {
+    history.push(`/category/${props.category.id}`);
+  };
   return (
     <Paper>
       <Toolbar>
@@ -56,7 +61,7 @@ function CategoryHeader(props: CategoryHeaderProps) {
         <Typography className={classes.title} variant="h6" noWrap>
           {props.category.name}
         </Typography>
-        <Link>See All</Link>
+        <Link onClick={onLinkClick}>See All</Link>
       </Toolbar>
     </Paper>
   );

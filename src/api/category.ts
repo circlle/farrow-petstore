@@ -93,6 +93,30 @@ export type GetCategoryListOutput = {
   count: number
 }
 
+/**
+ * {@label GetCategoryByIdInput}
+ */
+export type GetCategoryByIdInput = {
+  id: number
+}
+
+/**
+ * {@label GetCategoryByIdSuccess}
+ */
+export type GetCategoryByIdSuccess = {
+  type: 'CATEGORY'
+  category: Category
+}
+
+/**
+ * {@label CategoryNotFound}
+ */
+export type CategoryNotFound = {
+  type: 'CATEGORY_NOT_FOUND'
+  message: string
+  categoryId: number
+}
+
 export const url = 'http://localhost:3003/api/category'
 
 export const apiPipeline = createApiPipelineWithUrl(url)
@@ -113,4 +137,9 @@ export const api = {
    */
   getCategoryList: (input: GetCategoryListInput) =>
     apiPipeline.invoke({ path: ['getCategoryList'], input }) as Promise<GetCategoryListOutput>,
+  /**
+   * @remarks get category by id
+   */
+  getCategoryById: (input: GetCategoryByIdInput) =>
+    apiPipeline.invoke({ path: ['getCategoryById'], input }) as Promise<GetCategoryByIdSuccess | CategoryNotFound>,
 }

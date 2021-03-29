@@ -16,7 +16,7 @@ export type TabConfig = {
 };
 const TabConfigList: TabConfig[] = [
   { path: "/", icon: StarOutlineOutlined, label: "首页" },
-  { path: "/category", icon: CategoryOutlined, label: "分类" },
+  // { path: "/category/:categoryId", icon: CategoryOutlined, label: "分类" },
   { path: "/shopping", icon: ShoppingCartOutlined, label: "购物车" },
   { path: "/my", icon: PersonOutlined, label: "我的" },
 ];

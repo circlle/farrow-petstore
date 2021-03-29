@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CategoryHeader from "./CategoryHeader";
-import CategoryCard from "./CategoryCard";
+import CategoryCard from "../../shared/CategoryCard";
 import { createStyles, makeStyles } from "@material-ui/core";
 import {
   Category as CategoryInterface,

@@ -1,7 +1,15 @@
 import { Api } from "farrow-api";
 import { ApiService } from "farrow-api-server";
-import { Int, ObjectType, Type, String, List } from "farrow-schema";
-import { prisma } from '../prisma'
+import {
+  Int,
+  ObjectType,
+  Type,
+  String,
+  List,
+  Union,
+  Literal,
+} from "farrow-schema";
+import { prisma } from "../prisma";
 
 export class Category extends ObjectType {
   id = {
@@ -60,7 +68,7 @@ export const createCategory = Api(
   },
   async (input) => {
     const newCategory = await prisma.category.create({
-      data: input
+      data: input,
     });
     return { category: newCategory };
   }
@@ -89,7 +97,45 @@ export const deleteCategory = Api(
   },
   async (input) => {
     const category = await prisma.category.delete({ where: { id: input.id } });
-    return { category }
+    return { category };
+  }
+);
+
+// ! get category by id
+export class GetCategoryByIdInput extends ObjectType {
+  id = Int;
+}
+export class GetCategoryByIdSuccess extends ObjectType {
+  type = Literal("CATEGORY");
+  category = Category;
+}
+export class CategoryNotFound extends ObjectType {
+  type = Literal("CATEGORY_NOT_FOUND");
+  message = String;
+  categoryId = Int;
+}
+export const GetCategoryByIdOutput = Union(
+  GetCategoryByIdSuccess,
+  CategoryNotFound
+);
+export const getCategoryById = Api(
+  {
+    description: "get category by id",
+    input: GetCategoryByIdInput,
+    output: GetCategoryByIdOutput,
+  },
+  async (input) => {
+    const maybeCategory = await prisma.category.findUnique({
+      where: { id: input.id },
+    });
+    if (!maybeCategory) {
+      return {
+        type: "CATEGORY_NOT_FOUND" as const,
+        message: "category not found",
+        categoryId: input.id,
+      };
+    }
+    return { type: "CATEGORY" as const, category: maybeCategory };
   }
 );
 
@@ -120,7 +166,7 @@ export const getCategoryList = Api(
     const list = await prisma.category.findMany();
     return {
       list,
-      count: list.length
+      count: list.length,
     };
   }
 );
@@ -129,6 +175,7 @@ export const service = ApiService({
   entries: {
     createCategory,
     deleteCategory,
-    getCategoryList
+    getCategoryList,
+    getCategoryById
   },
 });

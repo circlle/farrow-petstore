@@ -4,12 +4,15 @@ import BottomBar from "./components/shared/BottomBar";
 import Login from "./components/Login";
 import Home from "./components/Home";
 import My from "./components/My";
+import CategoryDetail from "./components/CategoryDetail"
 
 function App() {
   return (
     <Router>
       <Switch>
-        <Route path={"/category"}>Category</Route>
+        <Route path={"/category/:categoryId"}>
+          <CategoryDetail />
+        </Route>
         <Route path={"/shopping"}>Shopping Cart</Route>
         <Route path={"/my"}>
           <My />
