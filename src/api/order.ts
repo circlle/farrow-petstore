@@ -145,6 +145,52 @@ export type PetPhoto = {
   url: string
 }
 
+/**
+ * {@label ConfirmOrderInput}
+ */
+export type ConfirmOrderInput = {
+  petId: number
+}
+
+/**
+ * {@label ConfirmOrderFailed}
+ */
+export type ConfirmOrderFailed = {
+  type: 'CONFIRM_ORDER_FAILED'
+  message: string
+}
+
+/**
+ * {@label ConfirmOrderSuccess}
+ */
+export type ConfirmOrderSuccess = {
+  type: 'CONRIRM_ORDER_SUCCESS'
+  order: Order
+}
+
+/**
+ * {@label DeleteOrderInput}
+ */
+export type DeleteOrderInput = {
+  petId: number
+}
+
+/**
+ * {@label DeleteOrderFailed}
+ */
+export type DeleteOrderFailed = {
+  type: 'DELETE_ORDER_FAILED'
+  message: string
+}
+
+/**
+ * {@label DeleteOrderSuccess}
+ */
+export type DeleteOrderSuccess = {
+  type: 'DELETE_ORDER_SUCCESS'
+  order: Order
+}
+
 export const url = 'http://localhost:3003/api/order'
 
 export const apiPipeline = createApiPipelineWithUrl(url)
@@ -160,4 +206,14 @@ export const api = {
    */
   getOrderList: (input: GetOrderListInput) =>
     apiPipeline.invoke({ path: ['getOrderList'], input }) as Promise<GetOrderListSuccess | GetOrderListUserInvalid>,
+  /**
+   * @remarks confirm one order
+   */
+  confirmOrder: (input: ConfirmOrderInput) =>
+    apiPipeline.invoke({ path: ['confirmOrder'], input }) as Promise<ConfirmOrderFailed | ConfirmOrderSuccess>,
+  /**
+   * @remarks delete one order
+   */
+  deleteOrder: (input: DeleteOrderInput) =>
+    apiPipeline.invoke({ path: ['deleteOrder'], input }) as Promise<DeleteOrderFailed | DeleteOrderSuccess>,
 }

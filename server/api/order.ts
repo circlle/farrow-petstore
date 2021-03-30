@@ -9,7 +9,14 @@ import {
   List,
   Nullable,
 } from "farrow-schema";
-import { OrderStatus as OrderStatusPrisma } from "@prisma/client";
+import {
+  OrderStatus as OrderStatusPrisma,
+  Order as OrderPrisma,
+  Pet as PetPrisma,
+  Category as CategoryPrisma,
+  PetPhoto as PetPhotoPrisma,
+  User as UserPrisma,
+} from "@prisma/client";
 import { prisma } from "../prisma";
 import { UserContext } from "../hooks";
 import { ApiService } from "farrow-api-server";
@@ -129,19 +136,93 @@ export const getOrderList = Api(
     ]);
     return {
       type: "GET_ORDER_LIST_SUCCESS" as const,
-      list: orders.map((order) => {
-        const { password, ...maskUser } = order.user;
-        return {
-          ...order,
-          user: {
-            ...maskUser,
-            createdAt: maskUser.createdAt.toDateString(),
-          },
-          pet: petToMaskPet(order.pet),
-          shipDate: order.shipDate.toDateString(),
-        };
-      }),
+      list: orders.map(formatOrder),
       pagination: { total, pageIndex, pageSize, count: orders.length },
+    };
+  }
+);
+
+// ! confirm order
+export class ConfirmOrderInput extends ObjectType {
+  petId = Int;
+}
+export class ConfirmOrderSuccess extends ObjectType {
+  type = Literal("CONRIRM_ORDER_SUCCESS");
+  order = Order;
+}
+export class ConfirmOrderFailed extends ObjectType {
+  type = Literal("CONFIRM_ORDER_FAILED");
+  message = String;
+}
+export const ConfirmOrderOutput = Union(
+  ConfirmOrderFailed,
+  ConfirmOrderSuccess
+);
+export const confirmOrder = Api(
+  {
+    description: "confirm one order",
+    input: ConfirmOrderInput,
+    output: ConfirmOrderOutput,
+  },
+  async (input) => {
+    const maybeOrder = await prisma.order.update({
+      where: { id: input.petId },
+      include: {
+        user: true,
+        pet: { include: { category: true, photos: true } },
+      },
+      data: { status: "CONFIRMED" },
+    });
+    if (!maybeOrder)
+      return {
+        type: "CONFIRM_ORDER_FAILED" as const,
+        message: "update failed",
+      };
+
+    return {
+      type: "CONRIRM_ORDER_SUCCESS" as const,
+      order: formatOrder(maybeOrder),
+    };
+  }
+);
+
+// ! confirm order
+export class DeleteOrderInput extends ObjectType {
+  petId = Int;
+}
+export class DeleteOrderSuccess extends ObjectType {
+  type = Literal("DELETE_ORDER_SUCCESS");
+  order = Order;
+}
+export class DeleteOrderFailed extends ObjectType {
+  type = Literal("DELETE_ORDER_FAILED");
+  message = String;
+}
+export const DeleterderOutput = Union(DeleteOrderFailed, DeleteOrderSuccess);
+export const deleteOrder = Api(
+  {
+    description: "delete one order",
+    input: DeleteOrderInput,
+    output: DeleterderOutput,
+  },
+  async (input) => {
+    const maybeOrder = await prisma.order.update({
+      where: { id: input.petId },
+      include: {
+        user: true,
+        pet: { include: { category: true, photos: true } },
+      },
+      data: { status: "DELETED" },
+    });
+    if (!maybeOrder)
+      return {
+        type: "DELETE_ORDER_FAILED" as const,
+        message: "update failed",
+      };
+
+    return {
+      type: "DELETE_ORDER_SUCCESS" as const,
+      order: formatOrder(maybeOrder),
     };
   }
 );
@@ -150,5 +231,29 @@ export const service = ApiService({
   entries: {
     createOrder,
     getOrderList,
+    confirmOrder,
+    deleteOrder
   },
 });
+
+// ! util
+function formatOrder(
+  order: OrderPrisma & {
+    user: UserPrisma;
+    pet: PetPrisma & {
+      category: CategoryPrisma;
+      photos: PetPhotoPrisma[];
+    };
+  }
+) {
+  const { password, ...maskUser } = order.user;
+  return {
+    ...order,
+    user: {
+      ...maskUser,
+      createdAt: maskUser.createdAt.toDateString(),
+    },
+    pet: petToMaskPet(order.pet),
+    shipDate: order.shipDate.toDateString(),
+  };
+}
