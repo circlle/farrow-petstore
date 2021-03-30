@@ -15,6 +15,7 @@ import {
 } from "@material-ui/core";
 import { Delete, DeleteForever, Done, ExpandMore } from "@material-ui/icons";
 import { Order, api as OrderApi } from "@server-api/order";
+import { useSnackbar } from "notistack";
 import React, { useState } from "react";
 import type { Action } from "./index";
 
@@ -55,34 +56,41 @@ export type OrderItemProps = {
 };
 function OrderItem({ order, dispatch }: OrderItemProps) {
   const classes = useStyle();
+  const { enqueueSnackbar } = useSnackbar();
   const [expanded, setExpanded] = useState(false);
   const { user, pet } = order;
 
   const confirmOrder = async () => {
     const data = await OrderApi.confirmOrder({ orderId: order.id });
     if (data.type === "CONFIRM_ORDER_FAILED") {
-      // todo better tips
-      console.log(data.message);
+      enqueueSnackbar(data.message, { variant: "warning" });
     } else if (data.type === "CONRIRM_ORDER_SUCCESS") {
       dispatch({ type: "UPDATE_ONE_ORDER", payload: data.order });
+      enqueueSnackbar("order confirmed", { variant: "success" });
+    } else {
+      enqueueSnackbar("unkonwn error", { variant: "error" });
     }
   };
   const deleteOrder = async () => {
     const data = await OrderApi.deleteOrder({ orderId: order.id });
     if (data.type === "DELETE_ORDER_FAILED") {
-      // todo better tips
-      console.log(data.message);
+      enqueueSnackbar(data.message, { variant: "warning" });
     } else if (data.type === "DELETE_ORDER_SUCCESS") {
       dispatch({ type: "UPDATE_ONE_ORDER", payload: data.order });
+      enqueueSnackbar("order deleted", { variant: "success" });
+    } else {
+      enqueueSnackbar("unkonwn error", { variant: "error" });
     }
   };
   const deleteOrderForever = async () => {
     const data = await OrderApi.deleteOrderForever({ orderId: order.id });
     if (data.type === "DELETE_ORDER_FOREVER_FAILED") {
-      // todo better tips
-      console.log(data.message);
+      enqueueSnackbar(data.message, { variant: "warning" });
     } else if (data.type === "DELETE_ORDER_FOREVER_SUCCESS") {
       dispatch({ type: "DELETE_ONE_ORDER", payload: order.id });
+      enqueueSnackbar("order deleted forever", { variant: "success" });
+    } else {
+      enqueueSnackbar("unkonwn error", { variant: "error" });
     }
   };
 

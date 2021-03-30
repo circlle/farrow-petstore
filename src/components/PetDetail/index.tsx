@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router";
 import TopBar from "../shared/TopBar";
 import PetInfo from "./PetInfo";
+import { useSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -40,6 +41,7 @@ const useStyles = makeStyles((theme) =>
 function PetDetail() {
   const classes = useStyles();
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
   const [pet, setPet] = useState<MaskPet | null>(null);
   const { petId: petIdStr } = useParams<{ petId: string | undefined }>();
   const petId = Number(petIdStr);
@@ -48,11 +50,13 @@ function PetDetail() {
   useEffect(() => {
     PetApi.getPetById({ id: petId }).then((data) => {
       if (data.type === "PET_NOT_FOUND") {
-        console.log(data.message);
+        enqueueSnackbar(data.message, { variant: "error" });
       } else if (data.type === "GET_PET_BY_ID_SUCCESS") {
         setPet(data.pet);
       } else {
-        console.log("unhandle error from pet detail getPetById");
+        enqueueSnackbar("unhandle error from pet detail getPetById", {
+          variant: "error",
+        });
       }
     });
   }, [petId]);
@@ -62,10 +66,9 @@ function PetDetail() {
   const onClickBuyMe = async () => {
     const data = await OrderApi.createOrder({ petId: pet.id });
     if (data.type === "INVALID_USER") {
-      // todo better tips
-      console.log(data.message);
+      enqueueSnackbar(data.message, { variant: "error" });
     } else if (data.type === "CREATE_ORDER_SUCCESS") {
-      // todo redirect
+      history.push('/order')
     }
   };
 

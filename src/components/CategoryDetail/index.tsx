@@ -14,6 +14,7 @@ import { useHistory, useParams } from "react-router";
 import CategoryCard from "../shared/CategoryCard";
 import CategoryDetailHeader from "./CategoryDetailHeader";
 import TopBar from "../shared/TopBar";
+import { useSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -39,6 +40,7 @@ const useStyles = makeStyles((theme) =>
 function CategoryDetail() {
   const classes = useStyles();
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar()
   const { categoryId: categoryIdStr } = useParams<{
     categoryId: string | undefined;
   }>();
@@ -48,9 +50,11 @@ function CategoryDetail() {
   useEffect(() => {
     CategoryApi.getCategoryById({ id: categoryId }).then((data) => {
       if (data.type === "CATEGORY_NOT_FOUND") {
-        console.log(data.message);
+        enqueueSnackbar(data.message, {variant: "error"})
       } else if (data.type === "CATEGORY") {
         SetCategory(data.category);
+      } else {
+        enqueueSnackbar("unkonwn error", {variant: "error"})
       }
     });
   }, [categoryId]);
@@ -65,7 +69,7 @@ function CategoryDetail() {
         setPets(data.list);
       })
       .catch((err) => {
-        console.log("fetch category page pet fail");
+        enqueueSnackbar("fetch category page pet fail", {variant: "error"})
       });
   }, [categoryId]);
   if (!category) return null;

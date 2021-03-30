@@ -5,6 +5,7 @@ import {
   Category as CategoryInterface,
   api as CategoryApi,
 } from "@server-api/category";
+import { useSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -16,6 +17,7 @@ const useStyles = makeStyles((theme) =>
 
 function Categories() {
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar()
   const [categories, setCategories] = useState<CategoryInterface[]>([]);
   useEffect(() => {
     CategoryApi.getCategoryList({ limit: 5 })
@@ -23,7 +25,7 @@ function Categories() {
         setCategories(data.list);
       })
       .catch((err) => {
-        console.log("fetch categories info failed", err);
+        enqueueSnackbar("fetch categories info failed", {variant: "error"})
       });
   }, []);
   return (

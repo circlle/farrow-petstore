@@ -8,6 +8,7 @@ import {
   Union,
   List,
   Nullable,
+  TypeOf
 } from "farrow-schema";
 import {
   OrderStatus as OrderStatusPrisma,
@@ -248,7 +249,7 @@ export const deleteOrderForever = Api(
     input: DeleteOrderForeverInput,
     output: DeleteOrderForeverOutput,
   },
-  async (input) => {
+  async (input): Promise<TypeOf<typeof DeleteOrderForeverOutput>> => {
     const maybeOrder = await prisma.order.delete({
       where: { id: input.orderId },
     });
