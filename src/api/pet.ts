@@ -11,8 +11,9 @@ import { createApiPipelineWithUrl } from 'farrow-api-client'
 export type CreatePetInput = {
   name: string
   price: number
+  description: string
   costPrice: number
-  categoryId: number | null | undefined
+  categoryId: number
 }
 
 /**

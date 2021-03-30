@@ -20,6 +20,7 @@ import {
   PetPhoto as PrismaPetPhoto,
 } from "@prisma/client";
 import { Category } from "./category";
+import { Pagination } from "./shared";
 
 export class PetPhoto extends ObjectType {
   id = Int;
@@ -149,12 +150,6 @@ export const getPetById = Api(
 );
 
 // ! findPets
-export class Pagination extends ObjectType {
-  total = Int;
-  count = Int;
-  pageSize = Int;
-  pageIndex = Int;
-}
 export class GetPetListInput extends ObjectType {
   pageIndex = Nullable(Int);
   pageSize = Nullable(Int);
@@ -220,7 +215,7 @@ export type PrismaMaskPet = Pick<
   | "photos"
   | "description"
 >;
-function petToMaskPet(pet: PrismaPetWithCategory): PrismaMaskPet {
+export function petToMaskPet(pet: PrismaPetWithCategory): PrismaMaskPet {
   return {
     id: pet.id,
     categoryId: pet.categoryId,

@@ -25,7 +25,44 @@ export type InvalidUser = {
  */
 export type CreateOrderSuccess = {
   type: 'CREATE_ORDER_SUCCESS'
-  order: Order
+  order: SimpleOrder
+}
+
+/**
+ * {@label SimpleOrder}
+ */
+export type SimpleOrder = {
+  id: number
+  petId: number
+  userId: number
+  shipDate: string
+  complete: boolean
+  status: 'NEW' | 'CONFIRMED' | 'DELETED'
+}
+
+/**
+ * {@label GetOrderListInput}
+ */
+export type GetOrderListInput = {
+  pageIndex: number | null | undefined
+  pageSize: number | null | undefined
+}
+
+/**
+ * {@label GetOrderListSuccess}
+ */
+export type GetOrderListSuccess = {
+  type: 'GET_ORDER_LIST_SUCCESS'
+  list: Order[]
+  pagination: Pagination
+}
+
+/**
+ * {@label GetOrderListUserInvalid}
+ */
+export type GetOrderListUserInvalid = {
+  type: 'USER_NOT_VALID'
+  message: string
 }
 
 /**
@@ -37,6 +74,75 @@ export type Order = {
   userId: number
   shipDate: string
   complete: boolean
+  user: MaskUser
+  pet: MaskPet
+  status: 'NEW' | 'CONFIRMED' | 'DELETED'
+}
+
+/**
+ * {@label Pagination}
+ */
+export type Pagination = {
+  total: number
+  count: number
+  pageSize: number
+  pageIndex: number
+}
+
+/**
+ * {@label MaskUser}
+ */
+export type MaskUser = {
+  id: number
+  username: string
+  email: string | null | undefined
+  avatar: string | null | undefined
+  createdAt: string
+}
+
+/**
+ * {@label MaskPet}
+ */
+export type MaskPet = {
+  id: number
+  name: string
+  price: number
+  description: string
+  categoryId: number | null | undefined
+  category: Category | null | undefined
+  photos: PetPhoto[]
+  status: 'AVAILABLE' | 'PENDING' | 'SOLD' | null | undefined
+}
+
+/**
+ * {@label Category}
+ */
+export type Category = {
+  /**
+   * @remarks The id of category
+   */
+  id: number
+  /**
+   * @remarks The name of category
+   */
+  name: string
+  /**
+   * @remarks category description
+   */
+  description: string
+  /**
+   * @remarks category photo
+   */
+  image: string
+}
+
+/**
+ * {@label PetPhoto}
+ */
+export type PetPhoto = {
+  id: number
+  petId: number
+  url: string
 }
 
 export const url = 'http://localhost:3003/api/order'
@@ -49,4 +155,9 @@ export const api = {
    */
   createOrder: (input: CreateOrderInput) =>
     apiPipeline.invoke({ path: ['createOrder'], input }) as Promise<InvalidUser | CreateOrderSuccess>,
+  /**
+   * @remarks get order list
+   */
+  getOrderList: (input: GetOrderListInput) =>
+    apiPipeline.invoke({ path: ['getOrderList'], input }) as Promise<GetOrderListSuccess | GetOrderListUserInvalid>,
 }

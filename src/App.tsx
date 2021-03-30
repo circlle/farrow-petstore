@@ -6,6 +6,7 @@ import Home from "./components/Home";
 import My from "./components/My";
 import CategoryDetail from "./components/CategoryDetail"
 import PetDetail from "./components/PetDetail";
+import Order from "./components/Order";
 
 function App() {
   return (
@@ -17,9 +18,12 @@ function App() {
         <Route path={"/category/:categoryId"}>
           <CategoryDetail />
         </Route>
-        <Route path={"/shopping"}>Shopping Cart</Route>
+        {/* <Route path={"/shopping"}>Shopping Cart</Route> */}
         <Route path={"/my"}>
           <My />
+        </Route>
+        <Route path={"/order"}>
+          <Order />
         </Route>
         <Route path={"/login"}>
           <Login />

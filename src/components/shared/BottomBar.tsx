@@ -2,6 +2,7 @@ import { OverridableComponent } from "@material-ui/core/OverridableComponent";
 import {
   CategoryOutlined,
   PersonOutlined,
+  ReorderOutlined,
   ShoppingCartOutlined,
   StarOutlineOutlined,
 } from "@material-ui/icons";
@@ -15,10 +16,9 @@ export type TabConfig = {
   label: string;
 };
 const TabConfigList: TabConfig[] = [
-  { path: "/", icon: StarOutlineOutlined, label: "首页" },
-  // { path: "/category/:categoryId", icon: CategoryOutlined, label: "分类" },
-  { path: "/shopping", icon: ShoppingCartOutlined, label: "购物车" },
-  { path: "/my", icon: PersonOutlined, label: "我的" },
+  { path: "/", icon: StarOutlineOutlined, label: "Home" },
+  { path: "/order", icon: ReorderOutlined /*ShoppingCartOutlined*/, label: "Order" },
+  { path: "/my", icon: PersonOutlined, label: "Mine" },
 ];
 const useStyles = makeStyles(() => ({
   appBar: {

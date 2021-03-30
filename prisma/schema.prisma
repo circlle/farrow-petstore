@@ -49,13 +49,20 @@ model PetPhoto {
 }
 
 model Order {
-  id       Int      @id @default(autoincrement())
+  id       Int         @id @default(autoincrement())
   petId    Int
-  pet      Pet      @relation(fields: [petId], references: [id])
+  pet      Pet         @relation(fields: [petId], references: [id])
   userId   Int
-  user     User     @relation(fields: [userId], references: [id])
-  shipDate DateTime @default(now())
+  user     User        @relation(fields: [userId], references: [id])
+  shipDate DateTime    @default(now())
+  status   OrderStatus @default(NEW)
   complete Boolean
+}
+
+enum OrderStatus {
+  NEW
+  CONFIRMED
+  DELETED
 }
 
 enum PetStatus {
