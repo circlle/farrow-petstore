@@ -149,7 +149,7 @@ export type PetPhoto = {
  * {@label ConfirmOrderInput}
  */
 export type ConfirmOrderInput = {
-  petId: number
+  orderId: number
 }
 
 /**
@@ -172,7 +172,7 @@ export type ConfirmOrderSuccess = {
  * {@label DeleteOrderInput}
  */
 export type DeleteOrderInput = {
-  petId: number
+  orderId: number
 }
 
 /**
@@ -189,6 +189,28 @@ export type DeleteOrderFailed = {
 export type DeleteOrderSuccess = {
   type: 'DELETE_ORDER_SUCCESS'
   order: Order
+}
+
+/**
+ * {@label DeleteOrderForeverInput}
+ */
+export type DeleteOrderForeverInput = {
+  orderId: number
+}
+
+/**
+ * {@label DeleteOrderForeverFailed}
+ */
+export type DeleteOrderForeverFailed = {
+  type: 'DELETE_ORDER_FOREVER_FAILED'
+  message: string
+}
+
+/**
+ * {@label DeleteOrderForeverSuccess}
+ */
+export type DeleteOrderForeverSuccess = {
+  type: 'DELETE_ORDER_FOREVER_SUCCESS'
 }
 
 export const url = 'http://localhost:3003/api/order'
@@ -216,4 +238,11 @@ export const api = {
    */
   deleteOrder: (input: DeleteOrderInput) =>
     apiPipeline.invoke({ path: ['deleteOrder'], input }) as Promise<DeleteOrderFailed | DeleteOrderSuccess>,
+  /**
+   * @remarks delete one order
+   */
+  deleteOrderForever: (input: DeleteOrderForeverInput) =>
+    apiPipeline.invoke({ path: ['deleteOrderForever'], input }) as Promise<
+      DeleteOrderForeverFailed | DeleteOrderForeverSuccess
+    >,
 }

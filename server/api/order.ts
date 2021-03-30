@@ -144,7 +144,7 @@ export const getOrderList = Api(
 
 // ! confirm order
 export class ConfirmOrderInput extends ObjectType {
-  petId = Int;
+  orderId = Int;
 }
 export class ConfirmOrderSuccess extends ObjectType {
   type = Literal("CONRIRM_ORDER_SUCCESS");
@@ -166,7 +166,7 @@ export const confirmOrder = Api(
   },
   async (input) => {
     const maybeOrder = await prisma.order.update({
-      where: { id: input.petId },
+      where: { id: input.orderId },
       include: {
         user: true,
         pet: { include: { category: true, photos: true } },
@@ -186,9 +186,9 @@ export const confirmOrder = Api(
   }
 );
 
-// ! confirm order
+// ! delete order
 export class DeleteOrderInput extends ObjectType {
-  petId = Int;
+  orderId = Int;
 }
 export class DeleteOrderSuccess extends ObjectType {
   type = Literal("DELETE_ORDER_SUCCESS");
@@ -207,7 +207,7 @@ export const deleteOrder = Api(
   },
   async (input) => {
     const maybeOrder = await prisma.order.update({
-      where: { id: input.petId },
+      where: { id: input.orderId },
       include: {
         user: true,
         pet: { include: { category: true, photos: true } },
@@ -227,12 +227,50 @@ export const deleteOrder = Api(
   }
 );
 
+// ! delete forever
+export class DeleteOrderForeverInput extends ObjectType {
+  orderId = Int;
+}
+export class DeleteOrderForeverSuccess extends ObjectType {
+  type = Literal("DELETE_ORDER_FOREVER_SUCCESS");
+}
+export class DeleteOrderForeverFailed extends ObjectType {
+  type = Literal("DELETE_ORDER_FOREVER_FAILED");
+  message = String;
+}
+export const DeleteOrderForeverOutput = Union(
+  DeleteOrderForeverFailed,
+  DeleteOrderForeverSuccess
+);
+export const deleteOrderForever = Api(
+  {
+    description: "delete one order",
+    input: DeleteOrderForeverInput,
+    output: DeleteOrderForeverOutput,
+  },
+  async (input) => {
+    const maybeOrder = await prisma.order.delete({
+      where: { id: input.orderId },
+    });
+    if (!maybeOrder)
+      return {
+        type: "DELETE_ORDER_FOREVER_FAILED" as const,
+        message: "update failed",
+      };
+
+    return {
+      type: "DELETE_ORDER_FOREVER_SUCCESS" as const,
+    };
+  }
+);
+
 export const service = ApiService({
   entries: {
     createOrder,
     getOrderList,
     confirmOrder,
-    deleteOrder
+    deleteOrder,
+    deleteOrderForever
   },
 });
 
