@@ -5,7 +5,6 @@ import {
   Nullable,
   Union,
   Literal,
-  Literals,
 } from "farrow-schema";
 import { ValidatorType, createSchemaValidator } from "farrow-schema/validator";
 import { Api } from "farrow-api";

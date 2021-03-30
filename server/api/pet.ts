@@ -10,6 +10,7 @@ import {
   Nullable,
   Literal,
   List,
+  TypeOf,
 } from "farrow-schema";
 import { prisma } from "../prisma";
 import {
@@ -61,8 +62,9 @@ export const MaskPetList = List(MaskPet);
 export class CreatePetInput extends ObjectType {
   name = String;
   price = Float;
+  description = String;
   costPrice = Float;
-  categoryId = Nullable(Int);
+  categoryId = Int;
 }
 
 export class PetExist extends ObjectType {
@@ -88,7 +90,9 @@ export const createPet = Api(
     if (maybeExistPet)
       return { type: "PET_EXIST" as const, message: `pet ${input.name} exist` };
 
-    const pet = await prisma.pet.create({ data: input });
+    const pet = await prisma.pet.create({
+      data: { ...input, status: "AVAILABLE" },
+    });
 
     const newCreatePet = await prisma.pet.findFirst({
       where: { id: pet.id },
@@ -197,7 +201,7 @@ export const service = ApiService({
   entries: {
     createPet,
     getPetList,
-    getPetById
+    getPetById,
   },
 });
 
