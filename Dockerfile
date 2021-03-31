@@ -1,4 +1,4 @@
-FROM node:14.15.4
+FROM node:14.15.4 as base
 
 WORKDIR /code
 
@@ -8,6 +8,10 @@ RUN yarn config set registry https://registry.npm.taobao.org/
 
 RUN yarn
 
-RUN yarn build
 
+FROM base as prod
+RUN yarn build
 CMD [ "yarn", "start" ]
+
+FROM base as dev
+CMD ["yarn", "dev"]
