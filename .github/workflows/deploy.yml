@@ -55,4 +55,4 @@ jobs:
           host: ${{ secrets.KSYUN_SSH_HOST }}
           username: ${{ secrets.KSYUN_SSH_USERNAME }}
           key: ${{ secrets.KSYUN_SSH_KEY }}
-          script: export DATABASE_URL=${{ secrets.DATABASE_URL }} && docker run -dp 80:3003 kxzhangdocker/farrow-petstore:${{steps.package-version.outputs.current-version}}
+          script: export DATABASE_URL=${{ secrets.DATABASE_URL }} && export SERVER_HOST=${{secrets.KSYUN_SSH_HOST}}  && docker run -dp 80:3003 kxzhangdocker/farrow-petstore:${{steps.package-version.outputs.current-version}}

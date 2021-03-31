@@ -1,5 +1,7 @@
 const { createFarrowConfig } = require('farrow')
 
+const domain = process.env.SERVER_HOST || "localhost:3003"
+
 module.exports = createFarrowConfig({
   server: {
     src: './server',
@@ -7,19 +9,19 @@ module.exports = createFarrowConfig({
   },
   api: [
     {
-      src: 'http://localhost:3003/api/category',
+      src: `http://${domain}/api/category`,
       dist: `${__dirname}/src/api/category.ts`
     },
     {
-      src: 'http://localhost:3003/api/user',
+      src: `http://${domain}/api/user`,
       dist: `${__dirname}/src/api/user.ts`
     },
     {
-      src: 'http://localhost:3003/api/pet',
+      src: `http://${domain}/api/pet`,
       dist: `${__dirname}/src/api/pet.ts`
     },
     {
-      src: 'http://localhost:3003/api/order',
+      src: `http://${domain}/api/order`,
       dist: `${__dirname}/src/api/order.ts`
     }
   ],
