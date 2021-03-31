@@ -60,5 +60,4 @@ jobs:
             export SERVER_HOST=${{secrets.KSYUN_SSH_HOST}}
             docker stop petstore-app
             docker rm petstore-app
-            docker image prune --force --all
             docker run -dp 80:3003 --name petstore-app kxzhangdocker/farrow-petstore:${{steps.package-version.outputs.current-version}}
