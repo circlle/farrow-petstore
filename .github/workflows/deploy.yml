@@ -48,10 +48,10 @@ jobs:
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
 
-      - name: Deploye to tencent ecs
+      - name: Deploye to ksyun ecs
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.KSYUN_SSH_HOST }}
           username: ${{ secrets.KSYUN_SSH_USERNAME }}
           key: ${{ secrets.KSYUN_SSH_KEY }}
-          script: docker run -dp 80:8080 kxzhangdocker/ldocker:latest
+          script: docker run -dp 80:8080 farrow-petstore:${{steps.package-version.outputs.current-version}}
