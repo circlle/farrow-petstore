@@ -901,7 +901,7 @@ execa@^5.0.0:
     signal-exit "^3.0.3"
     strip-final-newline "^2.0.0"
 
-farrow-api-client@^1.8.11:
+farrow-api-client@^1.8.1:
   version "1.8.10"
   resolved "https://registry.yarnpkg.com/farrow-api-client/-/farrow-api-client-1.8.10.tgz#c395133e53ec2d9fae869644653a5394e51f4c20"
   integrity sha512-dCmnNhoTN2/MKm7StspzT9HgUiX8B6FGXNsruXoE8S7QZ6bcYAlg6Le4UY0Na5ZeP1JhmBaKiJRpEbenGulFjQ==
@@ -910,7 +910,7 @@ farrow-api-client@^1.8.11:
     isomorphic-unfetch "^3.1.0"
     tslib "^2.1.0"
 
-farrow-api-server@^1.8.11:
+farrow-api-server@^1.8.1:
   version "1.8.10"
   resolved "https://registry.yarnpkg.com/farrow-api-server/-/farrow-api-server-1.8.10.tgz#296c631a6b1694bc7c708695405b6869019c9cf6"
   integrity sha512-CaDBb3fxPx7RJeJKdJ26ZAtNaH7IFvGgG2zpiJnVK+9O77SFu3VCxKSYo3ZdxIKuYoC7rPHLxz/KsApCDFOlzg==
@@ -918,7 +918,7 @@ farrow-api-server@^1.8.11:
     lodash.get "^4.4.2"
     tslib "^2.1.0"
 
-farrow-api@^1.8.10, farrow-api@^1.8.11:
+farrow-api@^1.8.1, farrow-api@^1.8.10:
   version "1.8.10"
   resolved "https://registry.yarnpkg.com/farrow-api/-/farrow-api-1.8.10.tgz#9eac13457cd6cf50e6b9ddf03984e97e39cca157"
   integrity sha512-kBig35VkbMYXN8OpwF/t0LSrx9M7R6G5GdQ6V9Qhy4AhDA3KiVufY3/vP13g2B/xls97MRWWr7D/ggFKJw9YqA==
@@ -927,7 +927,7 @@ farrow-api@^1.8.10, farrow-api@^1.8.11:
     prettier "^2.2.1"
     tslib "^2.1.0"
 
-farrow-http@^1.8.11:
+farrow-http@^1.8.1:
   version "1.8.10"
   resolved "https://registry.yarnpkg.com/farrow-http/-/farrow-http-1.8.10.tgz#90f404c0fb53a29fc9288180b994b0a6cd6c71e1"
   integrity sha512-5+SS/HcRFzpr6QoqCcdYG5PuvHEJ+/mmTZnDBphL9KI//Q4UD0MdyjDn44YtXxvLDEj2xlO73dxcafCYKCLs8A==
@@ -951,14 +951,14 @@ farrow-http@^1.8.11:
     type-is "^1.6.18"
     vary "^1.1.2"
 
-farrow-pipeline@^1.8.11:
+farrow-pipeline@^1.8.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/farrow-pipeline/-/farrow-pipeline-1.8.0.tgz#32a0938963224022bed0f4b661170565ad7f23a2"
   integrity sha512-1KHn62yXQ3UgsM8rflCUqzCAtRXlX97LwHKcABdoIlHILSo146MVD7U+/iy7IFSg7qIXB2i53GV+DcJhIr56cg==
   dependencies:
     tslib "^2.1.0"
 
-farrow-schema@^1.8.10, farrow-schema@^1.8.11:
+farrow-schema@^1.8.0, farrow-schema@^1.8.10:
   version "1.8.10"
   resolved "https://registry.yarnpkg.com/farrow-schema/-/farrow-schema-1.8.10.tgz#2f5dff6d6ab85bfc66793340d538065156fc0779"
   integrity sha512-OCezzm15jvPFTmjJ6aaQmj5MsbyzSnVprWE9/LcZ0gnZ5QXNOYRFVdNuGR/a2HFZKEysVUTFQ0tyzZbhfvf73w==
@@ -972,7 +972,7 @@ farrow-vite@^1.8.11:
   dependencies:
     tslib "^2.1.0"
 
-farrow@^1.8.11:
+farrow@^1.8.1:
   version "1.8.10"
   resolved "https://registry.yarnpkg.com/farrow/-/farrow-1.8.10.tgz#d805db1372e7df9a2722a9364ccd2c475fb2f270"
   integrity sha512-oRJpt7v7hvTKodHEWdkdiOnLppqzSUFeWnolIjZdwYM/9UpYm37yBPhenzHHwEamnpe7oY74g1lh2vViGFZbRQ==
