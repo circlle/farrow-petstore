@@ -1,5 +1,5 @@
 import path from "path";
-import { Http } from "farrow-http";
+import { Http, Response } from "farrow-http";
 import { vite } from "farrow-vite";
 
 import { services } from "./api";
@@ -20,6 +20,8 @@ if (process.env.NODE_ENV === "development") {
 } else {
   // enable vite-bundle-output when production
   http.serve("/", path.join(__dirname, "../dist/client"));
+  // default match
+  http.use(() => Response.file(path.join(__dirname, "../dist/client/index.html")))
 }
 
 // start listening
