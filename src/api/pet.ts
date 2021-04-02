@@ -3,7 +3,7 @@
  * Don't modify it manually
  */
 
-import { createApiPipelineWithUrl } from 'farrow-api-client'
+import { createApiPipelineWithUrl, ApiInvokeOptions } from 'farrow-api-client'
 
 /**
  * {@label CreatePetInput}
@@ -137,16 +137,18 @@ export const api = {
   /**
    * @remarks create a new pet
    */
-  createPet: (input: CreatePetInput) =>
-    apiPipeline.invoke({ path: ['createPet'], input }) as Promise<PetExist | CreatePetSuccess>,
+  createPet: (input: CreatePetInput, options?: ApiInvokeOptions) =>
+    apiPipeline.invoke({ type: 'Single', path: ['createPet'], input }, options) as Promise<PetExist | CreatePetSuccess>,
   /**
    * @remarks get pet list by filter
    */
-  getPetList: (input: GetPetListInput) =>
-    apiPipeline.invoke({ path: ['getPetList'], input }) as Promise<GetPetListOutput>,
+  getPetList: (input: GetPetListInput, options?: ApiInvokeOptions) =>
+    apiPipeline.invoke({ type: 'Single', path: ['getPetList'], input }, options) as Promise<GetPetListOutput>,
   /**
    * @remarks get pet by id
    */
-  getPetById: (input: GetPetByIdInput) =>
-    apiPipeline.invoke({ path: ['getPetById'], input }) as Promise<PetNotFound | GetPetByIdSuccess>,
+  getPetById: (input: GetPetByIdInput, options?: ApiInvokeOptions) =>
+    apiPipeline.invoke({ type: 'Single', path: ['getPetById'], input }, options) as Promise<
+      PetNotFound | GetPetByIdSuccess
+    >,
 }

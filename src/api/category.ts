@@ -3,7 +3,7 @@
  * Don't modify it manually
  */
 
-import { createApiPipelineWithUrl } from 'farrow-api-client'
+import { createApiPipelineWithUrl, ApiInvokeOptions } from 'farrow-api-client'
 
 /**
  * {@label CreateCategoryInput}
@@ -125,21 +125,23 @@ export const api = {
   /**
    * @remarks create a new category
    */
-  createCategory: (input: CreateCategoryInput) =>
-    apiPipeline.invoke({ path: ['createCategory'], input }) as Promise<CreateCategoryOutput>,
+  createCategory: (input: CreateCategoryInput, options?: ApiInvokeOptions) =>
+    apiPipeline.invoke({ type: 'Single', path: ['createCategory'], input }, options) as Promise<CreateCategoryOutput>,
   /**
    * @remarks delete one category
    */
-  deleteCategory: (input: DeleteCategoryInput) =>
-    apiPipeline.invoke({ path: ['deleteCategory'], input }) as Promise<DeleteCategoryOutput>,
+  deleteCategory: (input: DeleteCategoryInput, options?: ApiInvokeOptions) =>
+    apiPipeline.invoke({ type: 'Single', path: ['deleteCategory'], input }, options) as Promise<DeleteCategoryOutput>,
   /**
    * @remarks get category list
    */
-  getCategoryList: (input: GetCategoryListInput) =>
-    apiPipeline.invoke({ path: ['getCategoryList'], input }) as Promise<GetCategoryListOutput>,
+  getCategoryList: (input: GetCategoryListInput, options?: ApiInvokeOptions) =>
+    apiPipeline.invoke({ type: 'Single', path: ['getCategoryList'], input }, options) as Promise<GetCategoryListOutput>,
   /**
    * @remarks get category by id
    */
-  getCategoryById: (input: GetCategoryByIdInput) =>
-    apiPipeline.invoke({ path: ['getCategoryById'], input }) as Promise<GetCategoryByIdSuccess | CategoryNotFound>,
+  getCategoryById: (input: GetCategoryByIdInput, options?: ApiInvokeOptions) =>
+    apiPipeline.invoke({ type: 'Single', path: ['getCategoryById'], input }, options) as Promise<
+      GetCategoryByIdSuccess | CategoryNotFound
+    >,
 }

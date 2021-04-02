@@ -901,33 +901,34 @@ execa@^5.0.0:
     signal-exit "^3.0.3"
     strip-final-newline "^2.0.0"
 
-farrow-api-client@^1.8.1:
-  version "1.8.10"
-  resolved "https://registry.yarnpkg.com/farrow-api-client/-/farrow-api-client-1.8.10.tgz#c395133e53ec2d9fae869644653a5394e51f4c20"
-  integrity sha512-dCmnNhoTN2/MKm7StspzT9HgUiX8B6FGXNsruXoE8S7QZ6bcYAlg6Le4UY0Na5ZeP1JhmBaKiJRpEbenGulFjQ==
+farrow-api-client@^1.8.12:
+  version "1.8.12"
+  resolved "https://registry.yarnpkg.com/farrow-api-client/-/farrow-api-client-1.8.12.tgz#050fc93ebc63affcf4d914aeb85b0daecd1408da"
+  integrity sha512-fcdcEfHNTv128ApdQzaw3MklSfz7bT4yb5I/1LXjzO9iKp9ld5SGr2m9YRA7egfCffS/CgcGBzEtDAoboTcSiA==
   dependencies:
     dataloader "^2.0.0"
     isomorphic-unfetch "^3.1.0"
+    setimmediate "^1.0.5"
     tslib "^2.1.0"
 
-farrow-api-server@^1.8.1:
-  version "1.8.10"
-  resolved "https://registry.yarnpkg.com/farrow-api-server/-/farrow-api-server-1.8.10.tgz#296c631a6b1694bc7c708695405b6869019c9cf6"
-  integrity sha512-CaDBb3fxPx7RJeJKdJ26ZAtNaH7IFvGgG2zpiJnVK+9O77SFu3VCxKSYo3ZdxIKuYoC7rPHLxz/KsApCDFOlzg==
+farrow-api-server@^1.8.12:
+  version "1.8.12"
+  resolved "https://registry.yarnpkg.com/farrow-api-server/-/farrow-api-server-1.8.12.tgz#6bffa3b1ccd74bcbed7a190273b9d81c01d2bc84"
+  integrity sha512-rvDsDZz+1gazm5EPjIZWmEIapWzIA1kjz4obPAM8UVOoydOEetQF0uNkjecjuP3ffBmAG4tdK40UERcDu9p7FQ==
   dependencies:
     lodash.get "^4.4.2"
     tslib "^2.1.0"
 
-farrow-api@^1.8.1, farrow-api@^1.8.10:
-  version "1.8.10"
-  resolved "https://registry.yarnpkg.com/farrow-api/-/farrow-api-1.8.10.tgz#9eac13457cd6cf50e6b9ddf03984e97e39cca157"
-  integrity sha512-kBig35VkbMYXN8OpwF/t0LSrx9M7R6G5GdQ6V9Qhy4AhDA3KiVufY3/vP13g2B/xls97MRWWr7D/ggFKJw9YqA==
+farrow-api@^1.8.12:
+  version "1.8.12"
+  resolved "https://registry.yarnpkg.com/farrow-api/-/farrow-api-1.8.12.tgz#cee6f68a2ba0d0ccb349df0fb90ba6e7144c0a46"
+  integrity sha512-wNBHWsi8x7Lv/Qd3JiNAtdZ9nV9ZQREN2C/9pK1On2t8Ia+D9S1twx5B4/7ZWaItVohzLsNvQyV5NCy4rc+W0w==
   dependencies:
     cosmiconfig "^7.0.0"
     prettier "^2.2.1"
     tslib "^2.1.0"
 
-farrow-http@^1.8.1:
+farrow-http@^1.8.12:
   version "1.8.10"
   resolved "https://registry.yarnpkg.com/farrow-http/-/farrow-http-1.8.10.tgz#90f404c0fb53a29fc9288180b994b0a6cd6c71e1"
   integrity sha512-5+SS/HcRFzpr6QoqCcdYG5PuvHEJ+/mmTZnDBphL9KI//Q4UD0MdyjDn44YtXxvLDEj2xlO73dxcafCYKCLs8A==
@@ -972,17 +973,17 @@ farrow-vite@^1.8.11:
   dependencies:
     tslib "^2.1.0"
 
-farrow@^1.8.1:
-  version "1.8.10"
-  resolved "https://registry.yarnpkg.com/farrow/-/farrow-1.8.10.tgz#d805db1372e7df9a2722a9364ccd2c475fb2f270"
-  integrity sha512-oRJpt7v7hvTKodHEWdkdiOnLppqzSUFeWnolIjZdwYM/9UpYm37yBPhenzHHwEamnpe7oY74g1lh2vViGFZbRQ==
+farrow@^1.8.12:
+  version "1.8.12"
+  resolved "https://registry.yarnpkg.com/farrow/-/farrow-1.8.12.tgz#31322e66a46484397708b0ef5d4a35dea2c45b0c"
+  integrity sha512-elG69HxkNBzI0/ek6EoJkiH8oK4vWyG2GPUc7crlUf4uBtmJae/kEg4gZuc/NOUgeX402bxZVvnKa1ZoL8HO5A==
   dependencies:
     chokidar "^3.4.1"
     cosmiconfig "^7.0.0"
     cross-spawn "^7.0.3"
     esbuild "^0.8.50"
     execa "^5.0.0"
-    farrow-api "^1.8.10"
+    farrow-api "^1.8.12"
     farrow-schema "^1.8.10"
     fs-extra "^9.1.0"
     node-fetch "^2.6.1"
@@ -1900,6 +1901,11 @@ set-blocking@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/set-blocking/-/set-blocking-2.0.0.tgz#045f9782d011ae9a6803ddd382b24392b3d890f7"
   integrity sha1-BF+XgtARrppoA93TgrJDkrPYkPc=
+
+setimmediate@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/setimmediate/-/setimmediate-1.0.5.tgz#290cbb232e306942d7d7ea9b83732ab7856f8285"
+  integrity sha1-KQy7Iy4waULX1+qbg3Mqt4VvgoU=
 
 setprototypeof@1.1.1:
   version "1.1.1"

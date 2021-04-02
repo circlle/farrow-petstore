@@ -3,7 +3,7 @@
  * Don't modify it manually
  */
 
-import { createApiPipelineWithUrl } from 'farrow-api-client'
+import { createApiPipelineWithUrl, ApiInvokeOptions } from 'farrow-api-client'
 
 /**
  * {@label LoginInput}
@@ -118,15 +118,18 @@ export const api = {
   /**
    * @remarks login with username and password
    */
-  login: (input: LoginInput) => apiPipeline.invoke({ path: ['login'], input }) as Promise<LoginOutput>,
+  login: (input: LoginInput, options?: ApiInvokeOptions) =>
+    apiPipeline.invoke({ type: 'Single', path: ['login'], input }, options) as Promise<LoginOutput>,
   /**
    * @remarks create an new user
    */
-  createUser: (input: CreateUserInput) =>
-    apiPipeline.invoke({ path: ['createUser'], input }) as Promise<CreateUserOutput>,
+  createUser: (input: CreateUserInput, options?: ApiInvokeOptions) =>
+    apiPipeline.invoke({ type: 'Single', path: ['createUser'], input }, options) as Promise<CreateUserOutput>,
   /**
    * @remarks get user by id
    */
-  getUserById: (input: GetUserByIdInput) =>
-    apiPipeline.invoke({ path: ['getUserById'], input }) as Promise<GetUserByIdSuccess | GetUserByIdNotFound>,
+  getUserById: (input: GetUserByIdInput, options?: ApiInvokeOptions) =>
+    apiPipeline.invoke({ type: 'Single', path: ['getUserById'], input }, options) as Promise<
+      GetUserByIdSuccess | GetUserByIdNotFound
+    >,
 }

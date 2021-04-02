@@ -3,7 +3,7 @@
  * Don't modify it manually
  */
 
-import { createApiPipelineWithUrl } from 'farrow-api-client'
+import { createApiPipelineWithUrl, ApiInvokeOptions } from 'farrow-api-client'
 
 /**
  * {@label CreateOrderInput}
@@ -221,28 +221,36 @@ export const api = {
   /**
    * @remarks create a new order
    */
-  createOrder: (input: CreateOrderInput) =>
-    apiPipeline.invoke({ path: ['createOrder'], input }) as Promise<InvalidUser | CreateOrderSuccess>,
+  createOrder: (input: CreateOrderInput, options?: ApiInvokeOptions) =>
+    apiPipeline.invoke({ type: 'Single', path: ['createOrder'], input }, options) as Promise<
+      InvalidUser | CreateOrderSuccess
+    >,
   /**
    * @remarks get order list
    */
-  getOrderList: (input: GetOrderListInput) =>
-    apiPipeline.invoke({ path: ['getOrderList'], input }) as Promise<GetOrderListSuccess | GetOrderListUserInvalid>,
+  getOrderList: (input: GetOrderListInput, options?: ApiInvokeOptions) =>
+    apiPipeline.invoke({ type: 'Single', path: ['getOrderList'], input }, options) as Promise<
+      GetOrderListSuccess | GetOrderListUserInvalid
+    >,
   /**
    * @remarks confirm one order
    */
-  confirmOrder: (input: ConfirmOrderInput) =>
-    apiPipeline.invoke({ path: ['confirmOrder'], input }) as Promise<ConfirmOrderFailed | ConfirmOrderSuccess>,
+  confirmOrder: (input: ConfirmOrderInput, options?: ApiInvokeOptions) =>
+    apiPipeline.invoke({ type: 'Single', path: ['confirmOrder'], input }, options) as Promise<
+      ConfirmOrderFailed | ConfirmOrderSuccess
+    >,
   /**
    * @remarks delete one order
    */
-  deleteOrder: (input: DeleteOrderInput) =>
-    apiPipeline.invoke({ path: ['deleteOrder'], input }) as Promise<DeleteOrderFailed | DeleteOrderSuccess>,
+  deleteOrder: (input: DeleteOrderInput, options?: ApiInvokeOptions) =>
+    apiPipeline.invoke({ type: 'Single', path: ['deleteOrder'], input }, options) as Promise<
+      DeleteOrderFailed | DeleteOrderSuccess
+    >,
   /**
    * @remarks delete one order
    */
-  deleteOrderForever: (input: DeleteOrderForeverInput) =>
-    apiPipeline.invoke({ path: ['deleteOrderForever'], input }) as Promise<
+  deleteOrderForever: (input: DeleteOrderForeverInput, options?: ApiInvokeOptions) =>
+    apiPipeline.invoke({ type: 'Single', path: ['deleteOrderForever'], input }, options) as Promise<
       DeleteOrderForeverFailed | DeleteOrderForeverSuccess
     >,
 }
