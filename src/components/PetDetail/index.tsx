@@ -1,4 +1,4 @@
-import { Button, createStyles, makeStyles, Paper } from "@material-ui/core";
+import { Button, CircularProgress, createStyles, makeStyles, Paper } from "@material-ui/core";
 import { MaskPet, api as PetApi } from "@server-api/pet";
 import { api as OrderApi } from "@server-api/order";
 import React, { useState, useEffect } from "react";
@@ -34,13 +34,15 @@ const useStyles = makeStyles((theme) =>
     },
     buyButton: {
       width: "96%",
-    },
+    }
   })
 );
 
 function PetDetail() {
   const classes = useStyles();
   const history = useHistory();
+  const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
   const { enqueueSnackbar } = useSnackbar();
   const [pet, setPet] = useState<MaskPet | null>(null);
   const { petId: petIdStr } = useParams<{ petId: string | undefined }>();
@@ -64,12 +66,19 @@ function PetDetail() {
   if (!pet) return null;
 
   const onClickBuyMe = async () => {
-    const data = await OrderApi.createOrder({ petId: pet.id });
-    if (data.type === "INVALID_USER") {
-      enqueueSnackbar(data.message, { variant: "error" });
-    } else if (data.type === "CREATE_ORDER_SUCCESS") {
-      history.push('/order')
-    }
+    setSuccess(false)
+    setLoading(true)
+    OrderApi.createOrder({ petId: pet.id }).then((data) => {
+      if (data.type === "INVALID_USER") {
+        enqueueSnackbar(data.message, { variant: "error" });
+        setSuccess(false)
+      } else if (data.type === "CREATE_ORDER_SUCCESS") {
+        setSuccess(true)
+        history.push('/order')
+      }
+    }).finally(() => {
+      setLoading(false)
+    })
   };
 
   // todo select a default pet image
@@ -87,6 +96,7 @@ function PetDetail() {
         <Button
           className={classes.buyButton}
           color="primary"
+          disabled={loading || success}
           variant="contained"
           onClick={onClickBuyMe}
         >

@@ -31,13 +31,14 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+
 function BottomBar() {
   const classes = useStyles();
   const location = useLocation();
-  const [indicator, setIndicator] = useState(location.pathname);
+  const indicator = location.pathname;
 
   const inTabs = TabConfigList.some(
-    (config) => config.path === location.pathname
+    (config) => config.path === indicator
   );
   if (!inTabs) return null;
 
@@ -46,7 +47,6 @@ function BottomBar() {
       <Paper square className={classes.root}>
         <Tabs
           value={indicator}
-          onChange={(_, newValue) => setIndicator(newValue)}
           variant={"fullWidth"}
           indicatorColor={"secondary"}
           textColor={"secondary"}
