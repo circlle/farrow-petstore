@@ -58,40 +58,62 @@ function OrderItem({ order, dispatch }: OrderItemProps) {
   const classes = useStyle();
   const { enqueueSnackbar } = useSnackbar();
   const [expanded, setExpanded] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { user, pet } = order;
 
   const confirmOrder = async () => {
-    const data = await OrderApi.confirmOrder({ orderId: order.id });
-    if (data.type === "CONFIRM_ORDER_FAILED") {
-      enqueueSnackbar(data.message, { variant: "warning" });
-    } else if (data.type === "CONRIRM_ORDER_SUCCESS") {
-      dispatch({ type: "UPDATE_ONE_ORDER", payload: data.order });
-      enqueueSnackbar("order confirmed", { variant: "success" });
-    } else {
-      enqueueSnackbar("unkonwn error", { variant: "error" });
+    if (loading) return;
+    try {
+      setLoading(true)
+      const data = await OrderApi.confirmOrder({ orderId: order.id });
+      if (data.type === "CONFIRM_ORDER_FAILED") {
+        enqueueSnackbar(data.message, { variant: "warning" });
+      } else if (data.type === "CONRIRM_ORDER_SUCCESS") {
+        dispatch({ type: "UPDATE_ONE_ORDER", payload: data.order });
+        enqueueSnackbar("order confirmed", { variant: "success" });
+      } else {
+        enqueueSnackbar("unkonwn error", { variant: "error" });
+      } 
+    } catch (error) {
+      enqueueSnackbar("uncatch network error", { variant: "error" });
     }
+    setLoading(false)
   };
   const deleteOrder = async () => {
-    const data = await OrderApi.deleteOrder({ orderId: order.id });
-    if (data.type === "DELETE_ORDER_FAILED") {
-      enqueueSnackbar(data.message, { variant: "warning" });
-    } else if (data.type === "DELETE_ORDER_SUCCESS") {
-      dispatch({ type: "UPDATE_ONE_ORDER", payload: data.order });
-      enqueueSnackbar("order deleted", { variant: "success" });
-    } else {
-      enqueueSnackbar("unkonwn error", { variant: "error" });
+    if (loading) return;
+    try {
+      setLoading(true)
+      const data = await OrderApi.deleteOrder({ orderId: order.id });
+      if (data.type === "DELETE_ORDER_FAILED") {
+        enqueueSnackbar(data.message, { variant: "warning" });
+      } else if (data.type === "DELETE_ORDER_SUCCESS") {
+        dispatch({ type: "UPDATE_ONE_ORDER", payload: data.order });
+        enqueueSnackbar("order deleted", { variant: "success" });
+      } else {
+        enqueueSnackbar("unkonwn error", { variant: "error" });
+      } 
+    } catch (error) {
+      enqueueSnackbar("uncatch network error", { variant: "error" });
     }
+    setLoading(false)
   };
   const deleteOrderForever = async () => {
-    const data = await OrderApi.deleteOrderForever({ orderId: order.id });
-    if (data.type === "DELETE_ORDER_FOREVER_FAILED") {
-      enqueueSnackbar(data.message, { variant: "warning" });
-    } else if (data.type === "DELETE_ORDER_FOREVER_SUCCESS") {
-      dispatch({ type: "DELETE_ONE_ORDER", payload: order.id });
-      enqueueSnackbar("order deleted forever", { variant: "success" });
-    } else {
-      enqueueSnackbar("unkonwn error", { variant: "error" });
+    if (loading) return;
+    try {
+      setLoading(true)
+      const data = await OrderApi.deleteOrderForever({ orderId: order.id });
+      if (data.type === "DELETE_ORDER_FOREVER_FAILED") {
+        enqueueSnackbar(data.message, { variant: "warning" });
+      } else if (data.type === "DELETE_ORDER_FOREVER_SUCCESS") {
+        dispatch({ type: "DELETE_ONE_ORDER", payload: order.id });
+        enqueueSnackbar("order deleted forever", { variant: "success" });
+      } else {
+        enqueueSnackbar("unkonwn error", { variant: "error" });
+      } 
+    } catch (error) {
+      enqueueSnackbar("uncatch network error", { variant: "error" });
     }
+    setLoading(false)
   };
 
   // todo select a default pet image
