@@ -1,34 +1,32 @@
-import React from 'react'
-import {
-  AppBar,
-  IconButton,
-  Toolbar,
-  Typography,
-} from "@material-ui/core";
+import React from "react";
+import { AppBar, IconButton, Toolbar, Typography } from "@material-ui/core";
 import { ArrowBack } from "@material-ui/icons";
-import { useHistory } from 'react-router';
+import { useHistory } from "react-router";
 
 export type TopBarProps = {
-  title: string
-}
+  title: string;
+  needBack?: boolean;
+};
 
-function TopBar(props: TopBarProps) {
-  const history = useHistory()
+function TopBar({ title, needBack = true }: TopBarProps) {
+  const history = useHistory();
   return (
     <AppBar position="static" color="transparent" elevation={0}>
       <Toolbar>
-        <IconButton
-          edge="start"
-          onClick={() => {
-            history.goBack();
-          }}
-        >
-          <ArrowBack />
-        </IconButton>
-        <Typography variant="h6">{props.title}</Typography>
+        {needBack && (
+          <IconButton
+            edge="start"
+            onClick={() => {
+              history.goBack();
+            }}
+          >
+            <ArrowBack />
+          </IconButton>
+        )}
+        <Typography variant="h6">{title}</Typography>
       </Toolbar>
     </AppBar>
   );
 }
 
-export default TopBar
+export default TopBar;
