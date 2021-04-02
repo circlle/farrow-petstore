@@ -2,6 +2,7 @@ import React, { useEffect, useState, useReducer } from "react";
 import { api as OrderApi, Order } from "@server-api/order";
 import OrderItem from "./OrderItem";
 import { useSnackbar } from "notistack";
+import { useHistory } from "react-router";
 
 export type State = { orders: Order[] };
 export type Action =
@@ -43,12 +44,14 @@ function reducer(state: State, action: Action): State {
 
 function OrderList() {
   const [state, dispatch] = useReducer(reducer, initState);
+  const history = useHistory()
   const { enqueueSnackbar } = useSnackbar()
 
   useEffect(() => {
     OrderApi.getOrderList({ pageIndex: 0, pageSize: 20 }).then((data) => {
       if (data.type === "USER_NOT_VALID") {
         enqueueSnackbar(data.message, {variant: 'error'})
+        history.replace(`/login`)
       } else if (data.type === "GET_ORDER_LIST_SUCCESS") {
         dispatch({ type: "INIT", payload: data.list });
       } else {

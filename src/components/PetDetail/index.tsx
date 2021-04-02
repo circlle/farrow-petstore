@@ -71,6 +71,7 @@ function PetDetail() {
     OrderApi.createOrder({ petId: pet.id }).then((data) => {
       if (data.type === "INVALID_USER") {
         enqueueSnackbar(data.message, { variant: "error" });
+        history.replace(`/login`)
         setSuccess(false)
       } else if (data.type === "CREATE_ORDER_SUCCESS") {
         setSuccess(true)

@@ -69,7 +69,7 @@ export const createOrder = Api(
     output: CreateOrderOutput,
   },
   async (input) => {
-    const maybeUser = UserContext.assert();
+    const maybeUser = UserContext.get();
     if (!maybeUser)
       return { type: "INVALID_USER" as const, message: "user info invalid" };
     const newOrder = await prisma.order.create({
@@ -112,7 +112,7 @@ export const getOrderList = Api(
     output: GetOrderListOutput,
   },
   async (input) => {
-    const user = UserContext.assert();
+    const user = UserContext.get();
     if (!user) {
       return {
         type: "USER_NOT_VALID" as const,
