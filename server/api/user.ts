@@ -1,11 +1,4 @@
-import {
-  Int,
-  ObjectType,
-  Type,
-  Nullable,
-  Union,
-  Literal,
-} from "farrow-schema";
+import { Int, ObjectType, Type, Nullable, Union, Literal } from "farrow-schema";
 import { ValidatorType, createSchemaValidator } from "farrow-schema/validator";
 import { Api } from "farrow-api";
 import { prisma } from "../prisma";
@@ -13,6 +6,7 @@ import { verifyPassword, hashPassword } from "../security/passwordMask";
 import { sign as jwtSign } from "../security/jwt";
 import { either } from "fp-ts";
 import { ApiService } from "farrow-api-server";
+import { UserContext } from "../hooks";
 
 export class DateStringType extends ValidatorType<Date> {
   outputType = "Date";
@@ -193,6 +187,41 @@ export const login = Api(
   }
 );
 
+// ! get user info
+export class GetUserInfoInput extends ObjectType {}
+export class GetUserInfoSuccess extends ObjectType {
+  type = Literal("GET_USER_INFO_SUCCESS");
+  user = MaskUser;
+}
+export class GetUserInfoFail extends ObjectType {
+  type = Literal("GET_USER_INFO_FAIL");
+  message = String;
+}
+export const GetUserInfoOutput = Union(GetUserInfoSuccess, GetUserInfoFail);
+export const getUserInfo = Api(
+  {
+    description: "get user info",
+    input: GetUserInfoInput,
+    output: GetUserInfoOutput,
+  },
+  async (input) => {
+    const verifiedUser = UserContext.get();
+    if (!verifiedUser)
+      return { type: "GET_USER_INFO_FAIL" as const, message: "invalid user" };
+    const maybeUser = await prisma.user.findUnique({
+      where: { id: verifiedUser.id },
+    });
+    if (!maybeUser)
+      return { type: "GET_USER_INFO_FAIL" as const, message: "invalid user" };
+
+    const { password, ...maskUser } = maybeUser;
+    return {
+      type: "GET_USER_INFO_SUCCESS" as const,
+      user: { ...maskUser, createdAt: maskUser.createdAt.toDateString() },
+    };
+  }
+);
+
 // ! get user by id
 export class GetUserByIdInput extends ObjectType {
   id = Int;
@@ -233,6 +262,7 @@ export const service = ApiService({
   entries: {
     login,
     createUser,
+    getUserInfo,
     getUserById,
   },
 });
