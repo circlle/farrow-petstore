@@ -7,6 +7,7 @@ import My from "./components/My";
 import CategoryDetail from "./components/CategoryDetail"
 import PetDetail from "./components/PetDetail";
 import Order from "./components/Order";
+import SignUp from "./components/SignUp";
 
 function App() {
   return (
@@ -27,6 +28,9 @@ function App() {
         </Route>
         <Route path={"/login"}>
           <Login />
+        </Route>
+        <Route path={"/signup"}>
+          <SignUp />
         </Route>
         <Route path={"/"}>
           <Home />

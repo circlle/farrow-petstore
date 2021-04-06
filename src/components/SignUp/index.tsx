@@ -23,7 +23,6 @@ const useStyles = makeStyles((theme) =>
       left: 0,
       width: "100%",
       height: "100%",
-      zIndex: -1,
       // backgroundImage: `linear-gradient(#3580ff, #ff6243)`,
       // backgroundImage: `linear-gradient(#feac5e, #c779d0, #4bc0c8)`,
       // filter: "blur(30vh)",
@@ -39,7 +38,7 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-function Login() {
+function SignUp() {
   const classes = useStyles();
   const rootRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -70,4 +69,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default SignUp;

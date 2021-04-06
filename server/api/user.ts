@@ -77,20 +77,24 @@ export class CreateUserInput extends ObjectType {
   };
 }
 
-export class CreateUserFailed extends ObjectType {
+export class CreateUserHashFailed extends ObjectType {
+  type = Literal("CREATE_USER_HASH_FAILED");
+  message = String;
+}
+export class CreateUserExist extends ObjectType {
+  type = Literal("CREATE_USER_EXIST");
   message = String;
 }
 export class CreatedUserSuccess extends ObjectType {
-  user = {
-    [Type]: MaskUser,
-  };
+  type = Literal("CREATE_USER_SUCCESS");
+  user = MaskUser;
 }
 
-export class CreateUserOutput extends ObjectType {
-  data = {
-    [Type]: Union(CreatedUserSuccess, CreateUserFailed),
-  };
-}
+export const CreateUserOutput = Union(
+  CreatedUserSuccess,
+  CreateUserExist,
+  CreateUserHashFailed
+);
 
 export const createUser = Api(
   {
@@ -99,10 +103,20 @@ export const createUser = Api(
     output: CreateUserOutput,
   },
   async (input) => {
+    const maybeExistUser = await prisma.user.findUnique({
+      where: { username: input.username },
+    });
+    if (maybeExistUser)
+      return {
+        type: "CREATE_USER_EXIST" as const,
+        message: `user ${maybeExistUser.username} already exist`,
+      };
     const maybePassword = await hashPassword(input.password);
     if (either.isRight(maybePassword))
-      return { data: { message: maybePassword.right } };
-
+      return {
+        type: "CREATE_USER_HASH_FAILED" as const,
+        message: maybePassword.right,
+      };
     const hashedPassword = maybePassword.left;
 
     const { password, ...maskUser } = await prisma.user.create({
@@ -113,9 +127,8 @@ export const createUser = Api(
       },
     });
     return {
-      data: {
-        user: { ...maskUser, createdAt: maskUser.createdAt.toDateString() },
-      },
+      type: "CREATE_USER_SUCCESS" as const,
+      user: { ...maskUser, createdAt: maskUser.createdAt.toDateString() },
     };
   }
 );

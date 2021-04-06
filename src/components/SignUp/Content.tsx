@@ -11,15 +11,15 @@ import {
 } from "@material-ui/core";
 import {
   AccountCircle,
+  CheckCircle,
+  CheckCircleOutline,
   LockOutlined,
   Visibility,
   VisibilityOff,
 } from "@material-ui/icons";
 import { useState } from "react";
 import { useHistory } from "react-router";
-import Cookies from "js-cookie";
 import { api as UserApi } from "@server-api/user";
-import { TOKEN_FILED } from "@client-constant";
 import { useSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme) =>
@@ -49,37 +49,38 @@ const useStyles = makeStyles((theme) =>
 function Content() {
   const classes = useStyles();
   const history = useHistory();
-  const { enqueueSnackbar } = useSnackbar()
+  const { enqueueSnackbar } = useSnackbar();
   const [showPassword, setShowPassword] = useState(false);
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const onClickLogin = async () => {
-    const { data } = await UserApi.login({ username, password });
-    switch (data.__typename) {
-      case "LOGIN_SUCCESS": {
-        Cookies.set(TOKEN_FILED, data.token);
-        history.goBack();
-        break;
-      }
-      case "PASSWORD_ERROR":
-      case "USER_NOT_FOUND": {
-        enqueueSnackbar(data.message, {variant: "warning"})
-        break;
-      }
-      default:
-        break;
+  const [confirmedPassword, setConfirmedPassword] = useState("");
+  const onSignUp = async () => {
+    if (password !== confirmedPassword) {
+      enqueueSnackbar("passwords do not match");
+      return;
     }
-  };
-  const onSignUp = () => {
-    history.replace("/signup");
+    const data = await UserApi.createUser({
+      username,
+      password,
+      email: null,
+      avatar: null,
+    });
+    if (data.type === "CREATE_USER_HASH_FAILED" || data.type === "CREATE_USER_EXIST") {
+      enqueueSnackbar(data.message, {variant: 'warning'});
+    } else if (data.type === "CREATE_USER_SUCCESS") {
+      enqueueSnackbar("sign up succesfully, please sign in", {variant: "success"});
+      history.replace(`/login`);
+    } else {
+      enqueueSnackbar("unkown error when regist", { variant: "error" });
+    }
   };
   return (
     <div className={classes.root}>
       <Typography variant={"h6"} gutterBottom>
-        Login
+        Sign Up
       </Typography>
       <Typography variant={"caption"} gutterBottom>
-        Enter your username and password
+        register a new user
       </Typography>
       <form className={classes.formWrapper} noValidate autoComplete={"off"}>
         <TextField
@@ -120,25 +121,36 @@ function Content() {
             ),
           }}
         />
+        <TextField
+          className={classes.formItem}
+          label={"Confirm Password"}
+          value={confirmedPassword}
+          onChange={({ currentTarget: { value } }) =>
+            setConfirmedPassword(value)
+          }
+          placeholder={"enter you password"}
+          InputProps={{
+            type: showPassword ? "text" : "password",
+            startAdornment: (
+              <InputAdornment position={"start"}>
+                <CheckCircleOutline />
+              </InputAdornment>
+            ),
+          }}
+        />
       </form>
       <Button
         className={classes.loginButton}
         color={"primary"}
         variant={"contained"}
-        onClick={onClickLogin}
+        onClick={onSignUp}
       >
-        Login
+        Sign up
       </Button>
       <div className={`${classes.loginHelper}`}>
         <Typography variant={"caption"}>
-          Don't have an account?{" "}
-          <Link color={"primary"} href="" onClick={onSignUp}>
-            Sign up
-          </Link>
+          Already have an account? <Link color={"primary"}>Sign in</Link>
         </Typography>
-        {/* <Typography variant={"body2"}>
-          <Link color={"secondary"}>Forgot password</Link>
-        </Typography> */}
       </div>
     </div>
   );

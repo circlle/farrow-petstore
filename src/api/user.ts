@@ -56,23 +56,26 @@ export type CreateUserInput = {
 }
 
 /**
- * {@label CreateUserOutput}
- */
-export type CreateUserOutput = {
-  data: CreatedUserSuccess | CreateUserFailed
-}
-
-/**
  * {@label CreatedUserSuccess}
  */
 export type CreatedUserSuccess = {
+  type: 'CREATE_USER_SUCCESS'
   user: MaskUser
 }
 
 /**
- * {@label CreateUserFailed}
+ * {@label CreateUserExist}
  */
-export type CreateUserFailed = {
+export type CreateUserExist = {
+  type: 'CREATE_USER_EXIST'
+  message: string
+}
+
+/**
+ * {@label CreateUserHashFailed}
+ */
+export type CreateUserHashFailed = {
+  type: 'CREATE_USER_HASH_FAILED'
   message: string
 }
 
@@ -85,6 +88,27 @@ export type MaskUser = {
   email: string | null | undefined
   avatar: string | null | undefined
   createdAt: string
+}
+
+/**
+ * {@label GetUserInfoInput}
+ */
+export type GetUserInfoInput = {}
+
+/**
+ * {@label GetUserInfoSuccess}
+ */
+export type GetUserInfoSuccess = {
+  type: 'GET_USER_INFO_SUCCESS'
+  user: MaskUser
+}
+
+/**
+ * {@label GetUserInfoFail}
+ */
+export type GetUserInfoFail = {
+  type: 'GET_USER_INFO_FAIL'
+  message: string
 }
 
 /**
@@ -124,7 +148,16 @@ export const api = {
    * @remarks create an new user
    */
   createUser: (input: CreateUserInput, options?: ApiInvokeOptions) =>
-    apiPipeline.invoke({ type: 'Single', path: ['createUser'], input }, options) as Promise<CreateUserOutput>,
+    apiPipeline.invoke({ type: 'Single', path: ['createUser'], input }, options) as Promise<
+      CreatedUserSuccess | CreateUserExist | CreateUserHashFailed
+    >,
+  /**
+   * @remarks get user info
+   */
+  getUserInfo: (input: GetUserInfoInput, options?: ApiInvokeOptions) =>
+    apiPipeline.invoke({ type: 'Single', path: ['getUserInfo'], input }, options) as Promise<
+      GetUserInfoSuccess | GetUserInfoFail
+    >,
   /**
    * @remarks get user by id
    */
