@@ -56,6 +56,7 @@ jobs:
           username: ${{ secrets.KSYUN_SSH_USERNAME }}
           key: ${{ secrets.KSYUN_SSH_KEY }}
           script: |
+            docker swarm init
             echo ${{ secrets.DATABASE_URL }} | docker secret create DATABASE_URL -
             echo ${{ secrets.KSYUN_SSH_HOST }} | docker secret create SERVER_HOST -
             docker stop petstore-app
