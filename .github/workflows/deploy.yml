@@ -42,8 +42,8 @@ jobs:
         with:
           context: ./
           file: ./Dockerfile
-          secrets: |
-            "SERVER_HOST=${{secrets.KSYUN_SSH_HOST}}"
+          build-args: |
+            SERVER_HOST=${{secrets.KSYUN_SSH_HOST}}
           target: prod
           builder: ${{ steps.buildx.outputs.name }}
           push: true
