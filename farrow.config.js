@@ -1,8 +1,6 @@
 const { createFarrowConfig } = require('farrow')
-const fs = require("fs")
 
-const SERVER_HOST = fs.readFileSync(`/run/secrets/SERVER_HOST`, 'utf-8').trim()
-const domain = SERVER_HOST || "localhost:3003"
+const domain = process.env.SERVER_HOST || "localhost:3003"
 
 module.exports = createFarrowConfig({
   server: {
