@@ -42,6 +42,8 @@ jobs:
         with:
           context: ./
           file: ./Dockerfile
+          secrets: |
+            "SERVER_HOST=${{secrets.KSYUN_SSH_HOST}}"
           target: prod
           builder: ${{ steps.buildx.outputs.name }}
           push: true
@@ -60,4 +62,4 @@ jobs:
             # export SERVER_HOST=${{secrets.KSYUN_SSH_HOST}}
             docker stop petstore-app
             docker rm petstore-app
-            docker run -dp 80:3003 --env DATABASE_URL=${{ secrets.DATABASE_URL }} --env SERVER_HOST=${{secrets.KSYUN_SSH_HOST}} --name petstore-app kxzhangdocker/farrow-petstore:${{steps.package-version.outputs.current-version}}
+            docker run -dp 80:3003 --env DATABASE_URL=${{ secrets.DATABASE_URL }} --name petstore-app kxzhangdocker/farrow-petstore:${{steps.package-version.outputs.current-version}}
