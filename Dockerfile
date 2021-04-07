@@ -1,5 +1,9 @@
 FROM node:14.15.4 as base
 
+ARG SERVER_HOST
+
+ENV SERVER_HOST $SERVER_HOST
+
 WORKDIR /code
 
 COPY . .
@@ -7,8 +11,6 @@ COPY . .
 RUN yarn config set registry https://registry.npm.taobao.org/
 
 RUN yarn
-
-ENV SERVER_HOST=$SERVER_HOST
 
 FROM base as prod
 RUN yarn build
