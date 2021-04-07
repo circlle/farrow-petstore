@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { SnackbarProvider } from "notistack";
 import CustomThemeProvider from "./components/shared/CustomThemeProvider";
 import App from "./App";
+import './api/serverReplace'
 
 ReactDOM.render(
   <React.StrictMode>
