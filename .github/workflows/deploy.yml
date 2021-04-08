@@ -2,9 +2,9 @@ name: Deploy
 
 on:
   push:
-    # tags:
-    #   - "v*.*.*"
-    branches: [main]
+    tags:
+      - "v*.*.*"
+    # branches: [main]
 
 jobs:
   deploy:
