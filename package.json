@@ -12,7 +12,7 @@
     "@material-ui/icons": "^4.11.2",
     "@prisma/client": "2.19.0",
     "argon2": "0.24.1",
-    "farrow": "^1.8.12",
+    "farrow": "^1.9.0",
     "farrow-api": "^1.8.12",
     "farrow-api-client": "^1.8.12",
     "farrow-api-server": "^1.8.12",
