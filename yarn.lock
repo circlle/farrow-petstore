@@ -955,10 +955,10 @@ farrow-api@^1.8.12:
     prettier "^2.2.1"
     tslib "^2.1.0"
 
-farrow-api@^1.9.0:
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/farrow-api/-/farrow-api-1.9.0.tgz#a6bf6bd3ae41a57960bd107dbd29e9ab974103f4"
-  integrity sha512-AmaFjUcBA0y0JbNdlc8MujRdVOMLs0FVV18qrAUjFgVSwffIV3aCX3rmVWTyk8olKencESZwAx6iw1oIb3SIZw==
+farrow-api@^1.9.1:
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/farrow-api/-/farrow-api-1.9.1.tgz#9ea54d10c1a2ba01400ec6ac98343a18062a3c7f"
+  integrity sha512-guBO7wFdImvdbiPsRAlW9SDPeBXd8TOPtjiR1zktwgB70oK/KGWRu+wKUOAup+KvZxHoWch9sNE9790hJRY2GA==
   dependencies:
     cosmiconfig "^7.0.0"
     prettier "^2.2.1"
@@ -1002,10 +1002,10 @@ farrow-schema@^1.8.10:
   dependencies:
     tslib "^2.1.0"
 
-farrow-schema@^1.9.0:
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/farrow-schema/-/farrow-schema-1.9.0.tgz#6b576c51befe8001da1ee64221fe20afb447e5f7"
-  integrity sha512-AIpYbCNf8HNSFhrzMvgPDBmAm2uteqAuWtnV50BEJanqpOyqdWZ8g3Ai5oZT4Q5uOUoKAffrUjplNaCEzCGTkA==
+farrow-schema@^1.9.1:
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/farrow-schema/-/farrow-schema-1.9.1.tgz#2c716a7bc478321aa991bbecf6c5e9b1cde333dc"
+  integrity sha512-1YWBBBohM4IDemYAT/luDQ/K65g5MgimTHRKBkKEdSEgEktJoe8ZreM49b9gzLuhDYN9dpO21MzKoZsMFMkZVw==
   dependencies:
     tslib "^2.1.0"
 
@@ -1016,18 +1016,18 @@ farrow-vite@^1.8.11:
   dependencies:
     tslib "^2.1.0"
 
-farrow@^1.9.0:
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/farrow/-/farrow-1.9.0.tgz#8ac9aa93d9ee82d62d3e7e35c81fe07f44e17398"
-  integrity sha512-ghxZTPtH005ZkDxMCNx8xKitQyIhKdAQI/wTEL03NatgvBiCmxNn77ZBDVzBOoba3sS5YVanHFIqtxS9B53dgw==
+farrow@^1.9.1:
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/farrow/-/farrow-1.9.1.tgz#c21644e1f13a9f223535c234b9b2a05e46cb4615"
+  integrity sha512-D7YDzAYptHnD+ofSvV3Vf9vBltvKGox6yPtIIJTRLTg03n1hi4/78Ny19vVoiGZHtoG89t55Cf2YAtOd8mZGkA==
   dependencies:
     chokidar "^3.4.1"
     cosmiconfig "^7.0.0"
     cross-spawn "^7.0.3"
     esbuild "^0.8.50"
     execa "^5.0.0"
-    farrow-api "^1.9.0"
-    farrow-schema "^1.9.0"
+    farrow-api "^1.9.1"
+    farrow-schema "^1.9.1"
     fs-extra "^9.1.0"
     node-fetch "^2.6.1"
     read-pkg-up "^7.0.1"
