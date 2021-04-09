@@ -49,6 +49,7 @@ export const SimpleOrder = pick(Order, [
   "complete",
   "status",
 ]);
+SimpleOrder.displayName = "SimpleOrder"
 // ! create order
 export class CreateOrderInput extends ObjectType {
   petId = Int;

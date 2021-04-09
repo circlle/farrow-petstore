@@ -56,6 +56,7 @@ export const MaskPet = pick(Pet, [
   "photos",
   "status",
 ]);
+MaskPet.displayName = "MaskPet"
 
 export const MaskPetList = List(MaskPet);
 

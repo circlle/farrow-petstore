@@ -60,13 +60,7 @@ export type CreateUserInput = {
  */
 export type CreatedUserSuccess = {
   type: 'CREATE_USER_SUCCESS'
-  user: {
-    id: number
-    username: string
-    email: string | null | undefined
-    avatar: string | null | undefined
-    createdAt: string
-  }
+  user: MaskUser
 }
 
 /**
@@ -86,6 +80,17 @@ export type CreateUserHashFailed = {
 }
 
 /**
+ * {@label MaskUser}
+ */
+export type MaskUser = {
+  id: number
+  username: string
+  email: string | null | undefined
+  avatar: string | null | undefined
+  createdAt: string
+}
+
+/**
  * {@label GetUserInfoInput}
  */
 export type GetUserInfoInput = {}
@@ -95,13 +100,7 @@ export type GetUserInfoInput = {}
  */
 export type GetUserInfoSuccess = {
   type: 'GET_USER_INFO_SUCCESS'
-  user: {
-    id: number
-    username: string
-    email: string | null | undefined
-    avatar: string | null | undefined
-    createdAt: string
-  }
+  user: MaskUser
 }
 
 /**
@@ -124,13 +123,7 @@ export type GetUserByIdInput = {
  */
 export type GetUserByIdSuccess = {
   type: 'GET_USER_BY_ID_SUCCESS'
-  user: {
-    id: number
-    username: string
-    email: string | null | undefined
-    avatar: string | null | undefined
-    createdAt: string
-  }
+  user: MaskUser
 }
 
 /**

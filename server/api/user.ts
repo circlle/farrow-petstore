@@ -31,8 +31,9 @@ export const MaskUser = pick(User, [
   "username",
   "email",
   "avatar",
-  "createdAt",
+  "createdAt"
 ]);
+MaskUser.displayName = "MaskUser"
 
 // ! create user
 export class CreateUserInput extends ObjectType {
