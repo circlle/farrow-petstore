@@ -29,21 +29,16 @@ export type PetExist = {
  */
 export type CreatePetSuccess = {
   type: 'CREATE_PET_SUCCESS'
-  pet: MaskPet
-}
-
-/**
- * {@label MaskPet}
- */
-export type MaskPet = {
-  id: number
-  name: string
-  price: number
-  description: string
-  categoryId: number | null | undefined
-  category: Category | null | undefined
-  photos: PetPhoto[]
-  status: 'AVAILABLE' | 'PENDING' | 'SOLD' | null | undefined
+  pet: {
+    id: number
+    name: string
+    price: number
+    description: string
+    category: Category | null | undefined
+    categoryId: number | null | undefined
+    photos: PetPhoto[]
+    status: 'AVAILABLE' | 'PENDING' | 'SOLD' | null | undefined
+  }
 }
 
 /**
@@ -91,7 +86,16 @@ export type GetPetListInput = {
  * {@label GetPetListOutput}
  */
 export type GetPetListOutput = {
-  list: MaskPet[]
+  list: {
+    id: number
+    name: string
+    price: number
+    description: string
+    category: Category | null | undefined
+    categoryId: number | null | undefined
+    photos: PetPhoto[]
+    status: 'AVAILABLE' | 'PENDING' | 'SOLD' | null | undefined
+  }[]
   pagination: Pagination
 }
 
@@ -126,7 +130,16 @@ export type PetNotFound = {
  */
 export type GetPetByIdSuccess = {
   type: 'GET_PET_BY_ID_SUCCESS'
-  pet: MaskPet
+  pet: {
+    id: number
+    name: string
+    price: number
+    description: string
+    category: Category | null | undefined
+    categoryId: number | null | undefined
+    photos: PetPhoto[]
+    status: 'AVAILABLE' | 'PENDING' | 'SOLD' | null | undefined
+  }
 }
 
 export const url = 'http://localhost:3003/api/pet'

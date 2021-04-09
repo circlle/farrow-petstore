@@ -1,5 +1,12 @@
-import { Int, ObjectType, Type, Nullable, Union, Literal } from "farrow-schema";
-import { ValidatorType, createSchemaValidator } from "farrow-schema/validator";
+import {
+  Int,
+  ObjectType,
+  Type,
+  Nullable,
+  Union,
+  Literal,
+  pick,
+} from "farrow-schema";
 import { Api } from "farrow-api";
 import { prisma } from "../prisma";
 import { verifyPassword, hashPassword } from "../security/passwordMask";
@@ -7,59 +14,25 @@ import { sign as jwtSign } from "../security/jwt";
 import { either } from "fp-ts";
 import { ApiService } from "farrow-api-server";
 import { UserContext } from "../hooks";
-
-export class DateStringType extends ValidatorType<Date> {
-  outputType = "Date";
-  validate(input: unknown) {
-    if (input instanceof Date) {
-      return this.Ok(input);
-    }
-    if (typeof input === "number" || typeof input === "string") {
-      return this.Ok(new Date(input));
-    }
-    return this.Err(`${input} is not a valid date`);
-  }
-}
-
 export class User extends ObjectType {
-  id = {
-    [Type]: Int,
-  };
-  username = {
-    [Type]: String,
-  };
+  id = Int;
+  username = String;
   password = {
     desctiption: "need mask",
     [Type]: String,
   };
-  email = {
-    [Type]: Nullable(String),
-  };
-  avatar = {
-    [Type]: Nullable(String),
-  };
-  createdAt = {
-    [Type]: String,
-  };
+  email = Nullable(String);
+  avatar = Nullable(String);
+  createdAt = String;
 }
 
-export class MaskUser extends ObjectType {
-  id = {
-    [Type]: Int,
-  };
-  username = {
-    [Type]: String,
-  };
-  email = {
-    [Type]: Nullable(String),
-  };
-  avatar = {
-    [Type]: Nullable(String),
-  };
-  createdAt = {
-    [Type]: String,
-  };
-}
+export const MaskUser = pick(User, [
+  "id",
+  "username",
+  "email",
+  "avatar",
+  "createdAt",
+]);
 
 // ! create user
 export class CreateUserInput extends ObjectType {

@@ -8,7 +8,8 @@ import {
   Union,
   List,
   Nullable,
-  TypeOf
+  TypeOf,
+  pick,
 } from "farrow-schema";
 import {
   OrderStatus as OrderStatusPrisma,
@@ -40,14 +41,14 @@ export class Order extends ObjectType {
   pet = MaskPet;
   status = OrderStatus;
 }
-export class SimpleOrder extends ObjectType {
-  id = Int;
-  petId = Int;
-  userId = Int;
-  shipDate = String;
-  complete = Boolean;
-  status = OrderStatus;
-}
+export const SimpleOrder = pick(Order, [
+  "id",
+  "petId",
+  "userId",
+  "shipDate",
+  "complete",
+  "status",
+]);
 // ! create order
 export class CreateOrderInput extends ObjectType {
   petId = Int;
@@ -271,7 +272,7 @@ export const service = ApiService({
     getOrderList,
     confirmOrder,
     deleteOrder,
-    deleteOrderForever
+    deleteOrderForever,
   },
 });
 

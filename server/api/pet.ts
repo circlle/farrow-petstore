@@ -11,6 +11,7 @@ import {
   Literal,
   List,
   TypeOf,
+  pick,
 } from "farrow-schema";
 import { prisma } from "../prisma";
 import {
@@ -38,25 +39,24 @@ export class Pet extends ObjectType {
   price = Float;
   costPrice = Float;
   description = String;
-  categoryId = Nullable(Int);
-  photos = List(PetPhoto);
-  status = {
-    [Type]: Nullable(PetStatus),
-  };
-}
-
-export class MaskPet extends ObjectType {
-  id = Int;
-  name = String;
-  price = Float;
-  description = String;
-  categoryId = Nullable(Int);
   category = Nullable(Category);
+  categoryId = Nullable(Int);
   photos = List(PetPhoto);
   status = {
     [Type]: Nullable(PetStatus),
   };
 }
+export const MaskPet = pick(Pet, [
+  "id",
+  "name",
+  "price",
+  "category",
+  "description",
+  "categoryId",
+  "photos",
+  "status",
+]);
+
 export const MaskPetList = List(MaskPet);
 
 // ! create pet

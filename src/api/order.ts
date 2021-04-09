@@ -25,19 +25,14 @@ export type InvalidUser = {
  */
 export type CreateOrderSuccess = {
   type: 'CREATE_ORDER_SUCCESS'
-  order: SimpleOrder
-}
-
-/**
- * {@label SimpleOrder}
- */
-export type SimpleOrder = {
-  id: number
-  petId: number
-  userId: number
-  shipDate: string
-  complete: boolean
-  status: 'NEW' | 'CONFIRMED' | 'DELETED'
+  order: {
+    id: number
+    petId: number
+    userId: number
+    shipDate: string
+    complete: boolean
+    status: 'NEW' | 'CONFIRMED' | 'DELETED'
+  }
 }
 
 /**
@@ -74,8 +69,23 @@ export type Order = {
   userId: number
   shipDate: string
   complete: boolean
-  user: MaskUser
-  pet: MaskPet
+  user: {
+    id: number
+    username: string
+    email: string | null | undefined
+    avatar: string | null | undefined
+    createdAt: string
+  }
+  pet: {
+    id: number
+    name: string
+    price: number
+    description: string
+    category: Category | null | undefined
+    categoryId: number | null | undefined
+    photos: PetPhoto[]
+    status: 'AVAILABLE' | 'PENDING' | 'SOLD' | null | undefined
+  }
   status: 'NEW' | 'CONFIRMED' | 'DELETED'
 }
 
@@ -87,31 +97,6 @@ export type Pagination = {
   count: number
   pageSize: number
   pageIndex: number
-}
-
-/**
- * {@label MaskUser}
- */
-export type MaskUser = {
-  id: number
-  username: string
-  email: string | null | undefined
-  avatar: string | null | undefined
-  createdAt: string
-}
-
-/**
- * {@label MaskPet}
- */
-export type MaskPet = {
-  id: number
-  name: string
-  price: number
-  description: string
-  categoryId: number | null | undefined
-  category: Category | null | undefined
-  photos: PetPhoto[]
-  status: 'AVAILABLE' | 'PENDING' | 'SOLD' | null | undefined
 }
 
 /**

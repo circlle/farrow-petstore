@@ -18,7 +18,7 @@
     "farrow-api-server": "^1.8.12",
     "farrow-http": "^1.8.10",
     "farrow-pipeline": "^1.8.0",
-    "farrow-schema": "^1.8.10",
+    "farrow-schema": "^1.9.0",
     "fp-ts": "^2.9.5",
     "js-cookie": "^2.2.1",
     "jsonwebtoken": "^8.5.1",

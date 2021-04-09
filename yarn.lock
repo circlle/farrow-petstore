@@ -995,14 +995,7 @@ farrow-pipeline@^1.8.0:
   dependencies:
     tslib "^2.1.0"
 
-farrow-schema@^1.8.10:
-  version "1.8.10"
-  resolved "https://registry.yarnpkg.com/farrow-schema/-/farrow-schema-1.8.10.tgz#2f5dff6d6ab85bfc66793340d538065156fc0779"
-  integrity sha512-OCezzm15jvPFTmjJ6aaQmj5MsbyzSnVprWE9/LcZ0gnZ5QXNOYRFVdNuGR/a2HFZKEysVUTFQ0tyzZbhfvf73w==
-  dependencies:
-    tslib "^2.1.0"
-
-farrow-schema@^1.9.1:
+farrow-schema@^1.9.0, farrow-schema@^1.9.1:
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/farrow-schema/-/farrow-schema-1.9.1.tgz#2c716a7bc478321aa991bbecf6c5e9b1cde333dc"
   integrity sha512-1YWBBBohM4IDemYAT/luDQ/K65g5MgimTHRKBkKEdSEgEktJoe8ZreM49b9gzLuhDYN9dpO21MzKoZsMFMkZVw==
