@@ -1,1 +1,0 @@
-export const TOKEN_FILED = "petstore_token" 

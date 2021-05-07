@@ -1,9 +1,0 @@
-// import { apiPipeline } from "farrow-api-client";
-
-// apiPipeline.use((request, next) => {
-//   let url = (window as any).xxx_url ?? request.url;
-//   return next({
-//     ...request,
-//     url,
-//   });
-// });
